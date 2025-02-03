@@ -1,0 +1,8 @@
+{
+  "name": "RankGo3",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "e0705b3f"
+}
