@@ -1,0 +1,107 @@
+:host {
+  --primary-color: #36c1c8;
+  --secondary-color: #000;
+  --text-color: #000;
+  --white: #fff;
+}
+
+.header {
+  background: var(--secondary-color);
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+}
+
+.landing-container {
+  background: var(--white);
+}
+
+.hero {
+  display: flex;
+  flex-direction: row; /* ✅ Mantener en fila */
+  align-items: center;
+  justify-content: space-between; /* ✅ Distribuir contenido */
+  background: var(--primary-color);
+  padding: 60px 20px;
+}
+
+.hero-content {
+  flex: 1; /* ✅ Ocupa espacio disponible */
+  max-width: 50%;
+  padding-left: 10%;
+  text-align: left;
+  z-index: 9999;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  font-weight: bold;
+}
+
+.hero span {
+  color: var(--secondary-color);
+}
+
+.hero p {
+  font-size: 1.5rem;
+  margin-top: 10px;
+}
+
+ion-button {
+  margin-top: 20px;
+  --background: var(--white);
+  --color: var(--secondary-color);
+  font-weight: bold;
+}
+
+.hero-image {
+  flex: 1; /* ✅ Para que la imagen se acomode bien */
+  display: flex;
+  justify-content: flex-end; /* ✅ Imagen alineada a la derecha */
+}
+
+.hero-image img {
+  width: 400px;
+  border-radius: 10px;
+
+}
+
+.call-to-action {
+  background: var(--secondary-color);
+  color: var(--white);
+  padding: 30px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column; /* ✅ En móviles, poner en columna */
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .hero-content {
+    max-width: 100%;
+  }
+  .hero-image {
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .hero-image img {
+    max-width: 50%;
+  }
+}

@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 1
+      Concursantes
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,9 +9,68 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
+      <ion-title size="large">Concursantes</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <div   class="container" >
+    <h2  class="title" style="text-align: center;">Agregar Concursante</h2><br>
+    <form >
+      <div>
+        <ion-item>
+          <ion-input
+           [(ngModel)]="nombre"
+           name="nombre"
+            placeholder="Nombre de la presentacion"
+            type="name"
+            class="input"
+            required>
+          </ion-input>
+
+        </ion-item><br>
+
+        <ion-label class="ion-padding">Seleccione la categoria</ion-label>
+        <br>
+        <br>
+        <ion-list class="ion-padding">
+          <ion-radio-group [(ngModel)]="categoria" name="categoria">
+            <ion-item (click)="categoria = 'Talento Escenico'">
+              <ion-label>Talento Escénico</ion-label>
+              <ion-radio slot="end" value="Talento Escenico"></ion-radio>
+            </ion-item>
+            <ion-item (click)="categoria = 'Talento Creativo'">
+              <ion-label>Talento Creativo</ion-label>
+              <ion-radio slot="end" value="Talento Creativo"></ion-radio>
+            </ion-item>
+            <ion-item (click)="categoria = 'Otros Talentos'">
+              <ion-label>Otros Talentos</ion-label>
+              <ion-radio slot="end" value="Otros Talentos"></ion-radio>
+            </ion-item>
+            <ion-item (click)="categoria = 'Oficios'">
+              <ion-label>Oficios</ion-label>
+              <ion-radio slot="end" value="Oficios"></ion-radio>
+            </ion-item>
+            <ion-item (click)="categoria = 'Canto'">
+              <ion-label>Canto</ion-label>
+              <ion-radio slot="end" value="Canto"></ion-radio>
+            </ion-item>
+            <ion-item (click)="categoria = 'Coreografia'">
+              <ion-label>Coreografía</ion-label>
+              <ion-radio slot="end" value="Coreografia"></ion-radio>
+            </ion-item>
+            <ion-item (click)="categoria = 'Musico'">
+              <ion-label>Músico</ion-label>
+              <ion-radio slot="end" value="Musico"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+
+
+        </ion-list>
+        <div class="agregar">
+          <ion-button type="submit" expand="full" class="btn" (click)="agregarConcursante()">Agregar</ion-button>
+        </div>
+      </div>
+    </form>
+  </div>
+
 </ion-content>
