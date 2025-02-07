@@ -13,7 +13,6 @@
     </ion-toolbar>
   </ion-header>
 
-
   <div>
     <ion-item>
       <ion-label>Selecciona Concursante</ion-label>
@@ -35,6 +34,8 @@
       </ion-card-header>
 
       <ion-card-content>
+        <p>{{ aspecto.descripcion }}</p> <!-- 🔹 Ahora sí muestra la descripción -->
+
         <ion-radio-group [(ngModel)]="aspecto.puntuacion">
           <ion-item>
             <ion-label>Excelente (5)</ion-label>
@@ -60,7 +61,6 @@
     <ion-button expand="full" (click)="guardarEvaluacion()">
       Guardar Evaluación
     </ion-button>
-
 
   </div>
 

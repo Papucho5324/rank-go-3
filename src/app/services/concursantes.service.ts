@@ -28,16 +28,17 @@ export class ConcursantesService {
   }
 
   /** ✅ Actualiza la información de un concursante */
-  async actualizarConcursante(id: string, data: any): Promise<void> {
+  async actualizarConcursante(id: string) {
+    const concursanteRef = doc(this.firestore, `concursantes/${id}`);
     try {
-      const docRef = doc(this.firestore, `concursantes/${id}`);
-      await updateDoc(docRef, data);
-      console.log(`✅ Concursante con ID ${id} actualizado correctamente`);
+      await updateDoc(concursanteRef, { evaluado: true });
+      console.log(`✅ Concursante ${id} marcado como evaluado.`);
     } catch (error) {
-      console.error(`❌ Error al actualizar concursante con ID ${id}:`, error);
-      throw error; // Se lanza el error para que el código que lo llame pueda manejarlo
+      console.error(`❌ Error al actualizar el concursante ${id}:`, error);
+      throw error;
     }
   }
+  
 
   /** ✅ Guarda una evaluación en Firestore */
   async guardarEvaluacion(evaluacion: any) {
