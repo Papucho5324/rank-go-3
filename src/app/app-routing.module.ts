@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   // Página inicial: Landing
@@ -19,7 +20,7 @@ export const routes: Routes = [
   // Sección autenticada: Tabs
   {
     path: 'app',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),  canActivate: [AuthGuard]
   },
   // Si no encuentra ruta, redirige a Landing
   {

@@ -3,6 +3,12 @@
     <ion-title>
       Evaluar
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" ios="logo-apple" md="log-out-outline"></ion-icon>
+        
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -11,9 +17,10 @@
     <ion-toolbar>
       <ion-title size="large">Evaluar</ion-title>
     </ion-toolbar>
+
   </ion-header>
 
-  <div>
+  <div class="container">
     <ion-item>
       <ion-label>Selecciona Concursante</ion-label>
       <ion-select [(ngModel)]="concursanteSeleccionado" (ionChange)="cargarCategoriaYRubrica()">

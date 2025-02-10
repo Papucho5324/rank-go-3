@@ -1,16 +1,33 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Resultados
-    </ion-title>
+    <ion-title>Resultados</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-padding">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Resultados</ion-title>
     </ion-toolbar>
   </ion-header>
 
+  <div class="container">
+
+    <div *ngIf="evaluaciones.length > 0; else noResults">
+      <div *ngFor="let categoria of categorias">
+        <h2>{{ categoria }}</h2>
+        <ion-list>
+          <ion-item *ngFor="let concursante of getConcursantesPorCategoria(categoria)">
+            <ion-label>
+              <strong>{{ concursante.nombre }}</strong> - Puntuación: {{ concursante.calificacion }}
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+
+    <ng-template #noResults>
+      <p>No hay concursantes evaluados aún.</p>
+    </ng-template>
+  </div>
 </ion-content>
