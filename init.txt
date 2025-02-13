@@ -33,5 +33,5 @@ gsutil cors set cors.json gs://talentspotapp.firebasestorage.app
 
 
 
-
+ionic g page miguel/tareas
 

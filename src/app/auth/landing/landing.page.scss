@@ -31,15 +31,15 @@
 
 .hero {
   display: flex;
-  flex-direction: row; /* ✅ Mantener en fila */
+  flex-direction: row; 
   align-items: center;
-  justify-content: space-between; /* ✅ Distribuir contenido */
+  justify-content: space-between;
   background: var(--primary-color);
   padding: 60px 20px;
 }
 
 .hero-content {
-  flex: 1; /* ✅ Ocupa espacio disponible */
+  flex: 1;
   max-width: 50%;
   padding-left: 10%;
   text-align: left;

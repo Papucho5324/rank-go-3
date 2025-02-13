@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, UserCredential } from '@angular/fire/auth';
+import { setDoc, doc, Firestore } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private auth: Auth) {}
+  constructor(private auth: Auth, private firestore:Firestore) {}
 
   async login(email: string, password: string): Promise<UserCredential> {
     try {
@@ -22,6 +23,25 @@ export class AuthService {
     } catch (error) {
       console.error('❌ Error en el registro:', error);
       throw error;
+    }
+  }
+
+  async registrarAdmin(email: string, password: string) {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+      const user = userCredential.user;
+
+      // Guardar el usuario en Firestore con rol de admin
+      await setDoc(doc(this.firestore, "usuarios", user.uid), {
+        nombre: "Administrador",
+        email: email,
+        rol: "admin"
+      });
+
+      return "Administrador creado exitosamente";
+    } catch (error) {
+      console.error("Error al crear el administrador", error);
+      return (error as any).message;
     }
   }
 
