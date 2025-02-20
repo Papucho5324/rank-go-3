@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from './services/user.service';
+import { AuthService } from './services/auth-service.service';
 
 @Component({
   selector: 'app-root',
@@ -8,12 +9,12 @@ import { UserService } from './services/user.service';
   standalone: false,
 })
 export class AppComponent {
-  
-  constructor() {}
+
+  constructor(private authService:AuthService) {}
 
 
 
   async ngOnInit() {
-
+    this.authService.observarUsuario();
   }
 }

@@ -26,7 +26,7 @@ export class Tab1Page {
     }
 
     try {
-      await this.concursantesService.agregarConcursante(this.nombre, this.categoria, this.evaluado);
+      await this.concursantesService.agregarConcursante(this.nombre, this.categoria);
       await this.interactionService.showToast('✅ Concursante agregado con éxito.', 2000, 'top');
       this.nombre = ""; // Limpiar input
     } catch (error) {

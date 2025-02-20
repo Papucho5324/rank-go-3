@@ -1,12 +1,30 @@
-import { Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, UserCredential } from '@angular/fire/auth';
+import { inject, Injectable, NgZone } from '@angular/core';
+import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, UserCredential, onAuthStateChanged } from '@angular/fire/auth';
 import { setDoc, doc, Firestore } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private auth: Auth, private firestore:Firestore) {}
+  private auth = inject(Auth);
+  private firestore = inject(Firestore);
+  private ngZone = inject(NgZone);
+
+  constructor() {
+    console.log("✅ AuthService inicializado correctamente");
+  }
+
+  observarUsuario() {
+    onAuthStateChanged(this.auth, (user) => {
+      this.ngZone.run(() => {
+        if (user) {
+          console.log("✅ Usuario autenticado:", user.uid);
+        } else {
+          console.log("⚠ No hay usuario autenticado.");
+        }
+      });
+    });
+  }
 
   async login(email: string, password: string): Promise<UserCredential> {
     try {

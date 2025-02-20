@@ -1,8 +1,9 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { Auth, signOut } from '@angular/fire/auth';
+import { Auth, onAuthStateChanged, signOut } from '@angular/fire/auth';
 import { NavController } from '@ionic/angular';
 import { ConcursantesService } from '../services/concursantes.service';
 import { InteractionService } from '../services/interaction.service';
+import { firstValueFrom, take } from 'rxjs';
 
 @Component({
   selector: 'app-tab2',
@@ -12,12 +13,17 @@ import { InteractionService } from '../services/interaction.service';
 })
 export class Tab2Page {
   private auth = inject(Auth);
+  private unsubscribeAuthObserver: any;
+
+
   concursantes: any[] = [];
   concursanteSeleccionado: any = null;
   categoriaSeleccionada: string = '';
   observaciones: string = '';
   rubricaActual: any[] = [];
   promedio: number = 0;
+  // Removed incorrect property initialization
+
 
 
   rubricas: Record<string, { nombre: string; puntuacion: number | null; descripcion: string }[]> = {
@@ -69,7 +75,6 @@ export class Tab2Page {
   constructor(
     private navCtrl: NavController,
     private concursantesService: ConcursantesService,
-    private interactionService: InteractionService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -87,13 +92,48 @@ export class Tab2Page {
   }
 
   //** 🔹 Obtiene los concursantes faltantes por evaluar al cargar la página */
-  ngOnInit() {
-    this.concursantesService.obtenerConcursantes().subscribe(data => {
-      this.concursantes = data.filter(concursante => !concursante.evaluado);
-      console.log("📌 Concursantes disponibles para evaluar:", this.concursantes);
-      this.cdr.detectChanges();
-    });
+  /** 🔹 Obtiene los concursantes faltantes por evaluar al cargar la página */
+ngOnInit() {
+  // 📌 Se suscribe al estado de autenticación
+  this.unsubscribeAuthObserver = onAuthStateChanged(this.auth, async (user) => {
+    if (!user) {
+      console.warn("⚠️ No hay usuario autenticado.");
+      return;
+    }
+
+    const juezId = user.uid;
+
+    try {
+      // 📌 Obtiene concursantes una sola vez
+      this.concursantesService.obtenerConcursantes().pipe(take(1)).subscribe(async (data) => {
+        console.log("📌 Todos los concursantes obtenidos:", data);
+
+        const evaluacionesPromises = data.map(async (concursante) => {
+          return await firstValueFrom(this.concursantesService.obtenerEvaluaciones(concursante.id));
+        });
+
+        const evaluacionesResultados = await Promise.all(evaluacionesPromises);
+
+        this.concursantes = data.filter((concursante, index) => {
+          const evaluaciones = evaluacionesResultados[index] || [];
+          const yaEvaluado = evaluaciones.some((evalData: any) => evalData.id === juezId);
+          return !yaEvaluado;
+        });
+
+        console.log("📌 Concursantes disponibles para evaluar:", this.concursantes);
+        this.cdr.detectChanges();
+      });
+    } catch (error) {
+      console.error("❌ Error al obtener los concursantes:", error);
+    }
+  });
+}
+ngOnDestroy() {
+  if (this.unsubscribeAuthObserver) {
+    this.unsubscribeAuthObserver();
   }
+}
+
 
 /** 🔹 Cargar la categoría y la rúbrica correspondiente */
 cargarCategoriaYRubrica() {
@@ -160,7 +200,7 @@ cargarCategoriaYRubrica() {
     };
 
     try {
-      await this.concursantesService.guardarEvaluacion(evaluacion);
+      await this.concursantesService.guardarEvaluacion(this.concursanteSeleccionado.id, evaluacion.totalPuntos, evaluacion.observaciones);
 
       // 🔹 Actualizar el estado del concursante en Firebase
       await this.concursantesService.actualizarConcursante(this.concursanteSeleccionado.id);
@@ -175,7 +215,7 @@ cargarCategoriaYRubrica() {
       this.categoriaSeleccionada = '';
       this.rubricaActual = [];
       this.observaciones = '';
-      
+
 
       this.cdr.detectChanges();
     } catch (error) {
