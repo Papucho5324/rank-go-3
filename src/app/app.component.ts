@@ -8,19 +8,12 @@ import { UserService } from './services/user.service';
   standalone: false,
 })
 export class AppComponent {
-  menuOpciones: string[] = [];
-  constructor(private userService: UserService) {}
+  
+  constructor() {}
 
-  async verificarAcceso() {
-    const rol = await this.userService.obtenerRolUsuario();
-    if (rol === "admin") {
-      this.menuOpciones = ["dashboard", "concursantes", "evaluaciones"];
-    } else if (rol === "juez") {
-      this.menuOpciones = ["Evaluaciones"];
-    }
-  }
+
 
   async ngOnInit() {
-    await this.verificarAcceso();
+
   }
 }

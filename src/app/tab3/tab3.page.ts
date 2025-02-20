@@ -28,7 +28,7 @@ export class Tab3Page {
       .filter(e => e.categoria === categoria)
       .map(e => ({
         nombre: e.concursante,
-        calificacion: e.promedio,
+        calificacion: e.totalPuntos,
       }));
   }
 

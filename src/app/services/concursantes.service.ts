@@ -40,8 +40,20 @@ export class ConcursantesService {
 
   /** ✅ Actualiza la información de un concursante */
   async actualizarConcursante(id: string) {
-    const concursanteRef = doc(this.firestore, `concursantes/${id}`);
     try {
+      const user = this.auth.currentUser;
+      if (!user) throw new Error("No estás autenticado.");
+
+      // 📌 Obtener datos del usuario actual
+      const userRef = doc(this.firestore, `usuarios/${user.uid}`);
+      const userData = await getDoc(userRef);
+
+      if (!userData.exists() || (userData.data()['rol'] !== "admin" && userData.data()['rol'] !== "juez")) {
+        throw new Error("No tienes permisos para actualizar concursantes.");
+      }
+
+      // 📌 Si el usuario es admin o juez, actualizar concursante
+      const concursanteRef = doc(this.firestore, `concursantes/${id}`);
       await updateDoc(concursanteRef, { evaluado: true });
       console.log(`✅ Concursante ${id} marcado como evaluado.`);
     } catch (error) {
@@ -49,6 +61,7 @@ export class ConcursantesService {
       throw error;
     }
   }
+
 
   /** ✅ Guarda una evaluación en Firestore */
   async guardarEvaluacion(evaluacion: any) {

@@ -149,13 +149,12 @@ cargarCategoriaYRubrica() {
 
     // 🔹 Calcular el promedio de la evaluación
     const totalPuntos = this.rubricaActual.reduce((sum, aspecto) => sum + (aspecto.puntuacion ?? 0), 0);
-    this.promedio = totalPuntos / this.rubricaActual.length;
 
     const evaluacion = {
       concursante: this.concursanteSeleccionado.nombre,
       categoria: this.categoriaSeleccionada,
       // aspectos: this.rubricaActual,
-      promedio: this.promedio,
+      totalPuntos: totalPuntos,
       observaciones: this.observaciones,
       fecha: new Date()
     };
@@ -176,7 +175,7 @@ cargarCategoriaYRubrica() {
       this.categoriaSeleccionada = '';
       this.rubricaActual = [];
       this.observaciones = '';
-      this.promedio = 0;
+      
 
       this.cdr.detectChanges();
     } catch (error) {

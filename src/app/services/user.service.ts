@@ -1,21 +1,23 @@
-import { Injectable } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
-import { Firestore, doc,getDoc } from '@angular/fire/firestore';
+import { Injectable, inject } from '@angular/core';
+import { Auth, user } from '@angular/fire/auth';
+import { Firestore, doc, docData } from '@angular/fire/firestore';
+import { Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  private auth = inject(Auth);
+  private firestore = inject(Firestore);
 
-  constructor(
-    private auth:Auth, private firestore:Firestore
-  ) { }
-
-  async obtenerRolUsuario(): Promise<string | null> {
-    const user = this.auth.currentUser;
-    if (!user) return null;
-
-    const userDoc = await getDoc(doc(this.firestore, "usuarios", user.uid));
-    return userDoc.exists() ? userDoc.data()['rol'] : null;
+  obtenerDatosUsuario(): Observable<any> {
+    return user(this.auth).pipe(
+      switchMap(usuario => {
+        if (!usuario) return of(null); // Si no hay usuario autenticado, retorna null
+        const userRef = doc(this.firestore, `usuarios/${usuario.uid}`);
+        return docData(userRef);
+      })
+    );
   }
 }
