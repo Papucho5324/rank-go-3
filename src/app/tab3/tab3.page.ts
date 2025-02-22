@@ -12,6 +12,7 @@ export class Tab3Page implements OnInit {
   evaluaciones: any[] = [];
   categorias: string[] = [];
   concursantes: any[] = [];
+  categoriaSeleccionada: string = '';
 
   constructor(
     private resultadosService: ResultadosService,
@@ -19,44 +20,30 @@ export class Tab3Page implements OnInit {
   ) {}
 
   ngOnInit() {
-    // 🔄 Obtener concursantes y calcular la puntuación total
     this.concursantesService.obtenerConcursantes().subscribe(concursantes => {
-      this.concursantes = concursantes.map(concursante => {
-        let totalPuntos = 0;
-        let numEvaluaciones = 0;
+      this.concursantes = concursantes.map(concursante => ({
+        ...concursante,
+        totalPuntos: 0 // Inicialmente 0, luego se actualizará
+      }));
 
-        // ✅ Convertir las evaluaciones a un array
-        if (concursante.evaluaciones) {
-          const evaluacionesArray = Object.values(concursante.evaluaciones) as any[];
-          evaluacionesArray.forEach(evaluacion => {
-            totalPuntos += evaluacion.puntuacion;
-            numEvaluaciones++;
-          });
-        }
-
-        return {
-          ...concursante,
-          totalPuntos,
-          promedio: numEvaluaciones ? totalPuntos / numEvaluaciones : 0
-        };
+      // 🔹 Obtener la puntuación total de cada concursante
+      this.concursantes.forEach(concursante => {
+        this.concursantesService.obtenerTotalPuntuacion(concursante.id).subscribe(total => {
+          concursante.totalPuntos = total;
+        });
       });
     });
 
-    // 🔄 Obtener las evaluaciones generales
     this.resultadosService.obtenerConcursantesEvaluados().subscribe(data => {
       this.evaluaciones = data;
-      this.categorias = [...new Set(data.map(e => e.categoria))]; // 🔹 Obtener categorías únicas
-      console.log('📌 Evaluaciones obtenidas:', this.evaluaciones);
+      this.categorias = [...new Set(data.map(e => e.categoria))];
     });
   }
 
-  /** 🔹 Filtra los concursantes por categoría */
-  getConcursantesPorCategoria(categoria: string) {
-    return this.concursantes
-      .filter(concursante => concursante.categoria === categoria)
-      .map(concursante => ({
-        nombre: concursante.nombre,
-        calificacion: concursante.totalPuntos,
-      }));
+  getConcursantesFiltrados() {
+    if (!this.categoriaSeleccionada) {
+      return this.concursantes;
+    }
+    return this.concursantes.filter(concursante => concursante.categoria === this.categoriaSeleccionada);
   }
 }

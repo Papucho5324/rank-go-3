@@ -12,19 +12,24 @@
   </ion-header>
 
   <div class="container">
+    <ion-item>
+      <ion-label>Categoría</ion-label>
+      <ion-select [(ngModel)]="categoriaSeleccionada">
+        <ion-select-option value="">Todas</ion-select-option>
+        <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</ion-select-option>
+      </ion-select>
+    </ion-item>
 
-    <div *ngIf="evaluaciones.length > 0; else noResults">
-      <div *ngFor="let categoria of categorias">
-        <h2>{{ categoria }}</h2>
-        <ion-list>
-          <ion-item *ngFor="let concursante of getConcursantesPorCategoria(categoria)">
-            <ion-label>
-              <strong>{{ concursante.nombre }}</strong> - Puntuación: {{ concursante.calificacion }}
-            </ion-label>
-          </ion-item>
-        </ion-list>
-      </div>
-    </div>
+    <ion-grid *ngIf="getConcursantesFiltrados().length > 0; else noResults">
+      <ion-row>
+        <ion-col><strong>Concursante</strong></ion-col>
+        <ion-col><strong>Puntuación Final</strong></ion-col>
+      </ion-row>
+      <ion-row *ngFor="let concursante of getConcursantesFiltrados()">
+        <ion-col>{{ concursante.nombre }}</ion-col>
+        <ion-col>{{ concursante.totalPuntos }}</ion-col>
+      </ion-row>
+    </ion-grid>
 
     <ng-template #noResults>
       <p>No hay concursantes evaluados aún.</p>
