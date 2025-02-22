@@ -1,15 +1,17 @@
 import { inject, Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, getDoc, doc, updateDoc, collectionData, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, getDoc, doc, updateDoc, collectionData, setDoc, collectionSnapshots } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConcursantesService {
-  private firestore = inject(Firestore); // 👈 Corrección: usar `inject()`
+  private firestore = inject(Firestore);
 
-  constructor(private auth: Auth) {console.log("✅ ConcursantesService inicializado correctamente");}
+  constructor(private auth: Auth) {
+    console.log("✅ ConcursantesService inicializado correctamente");
+  }
 
   /** ✅ Agrega un concursante a Firestore con un registro de jueces evaluadores */
   async agregarConcursante(nombre: string, categoria: string): Promise<void> {
@@ -26,7 +28,7 @@ export class ConcursantesService {
       }
 
       const concursantesRef = collection(this.firestore, 'concursantes');
-      await addDoc(concursantesRef, { nombre, categoria, evaluadoPor: {} }); // 👈 Lista de jueces que evaluaron
+      await addDoc(concursantesRef, { nombre, categoria, evaluaciones: {} });
       console.log("✅ Concursante agregado correctamente");
     } catch (error) {
       console.error("❌ Error al agregar concursante:", error);
@@ -41,61 +43,58 @@ export class ConcursantesService {
   }
 
   /** ✅ Guarda una evaluación en la subcolección de cada concursante */
-async guardarEvaluacion(concursanteId: string, puntuacion: number, comentarios: string) {
-  try {
-    const user = this.auth.currentUser;
-    if (!user) throw new Error("No estás autenticado.");
-
-    // 📌 Obtener el nombre del juez desde la base de datos de usuarios
-    const userRef = doc(this.firestore, `usuarios/${user.uid}`);
-    const userData = await getDoc(userRef);
-
-    if (!userData.exists()) {
-      throw new Error("No se encontró información del juez.");
-    }
-
-    const nombreJuez = userData.data()['nombre'] || "Juez Desconocido"; // 🏷️ Si no tiene nombre, se asigna un default
-
-    const juezId = user.uid;
-    const evaluacionRef = doc(this.firestore, `concursantes/${concursanteId}/evaluaciones/${juezId}`);
-
-    // 📌 Cada juez solo puede agregar su propia evaluación
-    await setDoc(evaluacionRef, {
-      nombreJuez, // ✅ Guarda el nombre del juez
-      puntuacion, // ✅ Guarda la puntuación dada por el juez
-      comentarios, // ✅ Guarda los comentarios del juez
-      fecha: new Date()
-    });
-
-    console.log(`✅ Evaluación guardada por el juez ${nombreJuez} para el concursante ${concursanteId}`);
-
-  } catch (error) {
-    console.error("❌ Error al guardar la evaluación:", error);
-  }
-}
-
-
- /** ✅ Obtener todas las evaluaciones de un concursante */
-obtenerEvaluaciones(concursanteId: string): Observable<any[]> {
-  const evaluacionesRef = collection(this.firestore, `concursantes/${concursanteId}/evaluaciones`);
-  return collectionData(evaluacionesRef, { idField: 'id' }); // 📌 Devuelve la lista de evaluaciones con el ID de cada juez
-}
-
-
-  /** ✅ Obtener el total de evaluaciones y puntuaciones de un concursante */
-  async obtenerTotalPuntuacion(concursanteId: string): Promise<number> {
+  async guardarEvaluacion(concursanteId: string, puntuacion: number, comentarios: string) {
     try {
-      const evaluacionesRef = collection(this.firestore, `concursantes/${concursanteId}/evaluaciones`);
-      const evaluacionesSnapshot = await collectionData(evaluacionesRef).toPromise();
+      const user = this.auth.currentUser;
+      if (!user) throw new Error("No estás autenticado.");
 
-      if (!evaluacionesSnapshot) return 0;
+      // 📌 Obtener el nombre del juez desde la base de datos de usuarios
+      const userRef = doc(this.firestore, `usuarios/${user.uid}`);
+      const userData = await getDoc(userRef);
 
-      const totalPuntos = evaluacionesSnapshot.reduce((sum, evalData: any) => sum + evalData.puntuacion, 0);
-      return totalPuntos;
+      if (!userData.exists()) {
+        throw new Error("No se encontró información del juez.");
+      }
+
+      const nombreJuez = userData.data()['nombre'] || "Juez Desconocido";
+
+      const juezId = user.uid;
+      const evaluacionRef = doc(this.firestore, `concursantes/${concursanteId}/evaluaciones/${juezId}`);
+
+      await setDoc(evaluacionRef, {
+        nombreJuez,
+        puntuacion,
+        comentarios,
+        fecha: new Date()
+      });
+
+      console.log(`✅ Evaluación guardada por el juez ${nombreJuez} para el concursante ${concursanteId}`);
+
     } catch (error) {
-      console.error("❌ Error al calcular la puntuación total:", error);
-      return 0;
+      console.error("❌ Error al guardar la evaluación:", error);
     }
+  }
+
+  /** ✅ Obtener todas las evaluaciones de un concursante */
+  obtenerEvaluaciones(concursanteId: string): Observable<any[]> {
+    const evaluacionesRef = collection(this.firestore, `concursantes/${concursanteId}/evaluaciones`);
+    return collectionData(evaluacionesRef, { idField: 'id' });
+  }
+
+  /** ✅ Obtiene todas las evaluaciones de un concursante y suma sus puntuaciones en tiempo real */
+  obtenerTotalPuntuacion(concursanteId: string): Observable<number> {
+    const evaluacionesRef = collection(this.firestore, `concursantes/${concursanteId}/evaluaciones`);
+
+    return collectionSnapshots(evaluacionesRef).pipe(
+      map(snapshot => {
+        let total = 0;
+        snapshot.forEach(doc => {
+          total += doc.data()['puntuacion'] || 0;
+        });
+        console.log(`📌 Total de puntos actualizado en tiempo real para concursante ${concursanteId}:`, total);
+        return total;
+      })
+    );
   }
 
   /** ✅ Obtener los jueces que han evaluado un concursante */
@@ -106,7 +105,7 @@ obtenerEvaluaciones(concursanteId: string): Observable<any[]> {
 
       if (concursanteData.exists()) {
         const data = concursanteData.data();
-        return Object.keys(data['evaluadoPor'] || {});
+        return Object.keys(data['evaluaciones'] || {});
       }
 
       return [];
@@ -116,39 +115,28 @@ obtenerEvaluaciones(concursanteId: string): Observable<any[]> {
     }
   }
 
-/** ✅ Marca a un concursante como evaluado por un juez específico */
-async actualizarConcursante(concursanteId: string) {
-  try {
-    const user = this.auth.currentUser;
-    if (!user) throw new Error("❌ No estás autenticado.");
+  /** ✅ Marca a un concursante como evaluado por un juez específico */
+  async actualizarConcursante(concursanteId: string) {
+    try {
+      const user = this.auth.currentUser;
+      if (!user) throw new Error("❌ No estás autenticado.");
 
-    const concursanteRef = doc(this.firestore, `concursantes/${concursanteId}`);
-    const concursanteData = await getDoc(concursanteRef);
+      const concursanteRef = doc(this.firestore, `concursantes/${concursanteId}`);
+      const concursanteData = await getDoc(concursanteRef);
 
-    if (!concursanteData.exists()) {
-      throw new Error(`❌ Concursante ${concursanteId} no encontrado.`);
+      if (!concursanteData.exists()) {
+        throw new Error(`❌ Concursante ${concursanteId} no encontrado.`);
+      }
+
+      const data = concursanteData.data();
+      const evaluadoPor = data?.['evaluaciones'] ? { ...data['evaluaciones'] } : {};
+      evaluadoPor[user.uid] = true;
+
+      await updateDoc(concursanteRef, { evaluaciones: evaluadoPor });
+
+      console.log(`✅ Concursante ${concursanteId} evaluado por el juez ${user.uid}`);
+    } catch (error) {
+      console.error(`❌ Error al actualizar el concursante ${concursanteId}:`, error);
     }
-
-    const data = concursanteData.data();
-
-    // 🔹 Asegurar que evaluadoPor siempre sea un objeto
-    const evaluadoPor = data?.['evaluadoPor'] ? { ...data['evaluadoPor'] } : {};
-
-    // 🔹 Agregar el juez actual a la lista de evaluadores
-    evaluadoPor[user.uid] = true;
-
-    console.log(`🔹 Antes de actualizar: `, data);
-    console.log(`🔹 Actualizando concursante ${concursanteId} con evaluadoPor:`, evaluadoPor);
-
-    // 🔹 Guardar actualización en Firestore
-    await updateDoc(concursanteRef, { evaluadoPor });
-
-    console.log(`✅ Concursante ${concursanteId} evaluado por el juez ${user.uid}`);
-  } catch (error) {
-    console.error(`❌ Error al actualizar el concursante ${concursanteId}:`, error);
-    throw error;
   }
-}
-
-
 }
