@@ -49,11 +49,18 @@ export class Tab3Page implements OnInit {
 
     // 🔹 Aplicar ordenación según la selección
     if (this.ordenSeleccionado === 'mayor') {
-      return concursantesFiltrados.sort((a, b) => b.totalPuntos - a.totalPuntos);
+      concursantesFiltrados.sort((a, b) => b.totalPuntos - a.totalPuntos);
+    } else if (this.ordenSeleccionado === 'menor') {
+      concursantesFiltrados.sort((a, b) => a.totalPuntos - b.totalPuntos);
     }
-    if (this.ordenSeleccionado === 'menor') {
-      return concursantesFiltrados.sort((a, b) => a.totalPuntos - b.totalPuntos);
-    }
-    return concursantesFiltrados; // Default: sin orden específico
+
+    // 🔹 Concatenar la categoría solo si se selecciona "Todas"
+    return concursantesFiltrados.map(concursante => ({
+      ...concursante,
+      nombre:
+        this.categoriaSeleccionada === ''
+          ? `${concursante.nombre} (${concursante.categoria})`
+          : concursante.nombre
+    }));
   }
 }
