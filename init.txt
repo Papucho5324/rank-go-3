@@ -16,6 +16,10 @@ ionic build --prod
 ionic build
 ionic capacitor copy android
 ionic capacitor sync android
+ionic capacitor copy ios
+ionic capacitor sync ios
+
+
 ionic capacitor run android
 
 npx cap sync

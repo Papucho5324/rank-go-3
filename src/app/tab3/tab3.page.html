@@ -18,7 +18,7 @@
         <ion-select-option value="">Todas</ion-select-option>
         <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</ion-select-option>
       </ion-select>
-      <ion-label></ion-label>
+      
       <ion-label>Ordenar por</ion-label>
       <ion-select [(ngModel)]="ordenSeleccionado">
         <ion-select-option value="default">Por defecto</ion-select-option>
