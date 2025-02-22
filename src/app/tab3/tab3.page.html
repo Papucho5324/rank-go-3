@@ -18,7 +18,23 @@
         <ion-select-option value="">Todas</ion-select-option>
         <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</ion-select-option>
       </ion-select>
+      <ion-label></ion-label>
+      <ion-label>Ordenar por</ion-label>
+      <ion-select [(ngModel)]="ordenSeleccionado">
+        <ion-select-option value="default">Por defecto</ion-select-option>
+        <ion-select-option value="mayor">Mayor puntuación</ion-select-option>
+        <ion-select-option value="menor">Menor puntuación</ion-select-option>
+      </ion-select>
     </ion-item>
+<br>
+    <!-- <ion-item>
+      <ion-label>Ordenar por</ion-label>
+      <ion-select [(ngModel)]="ordenSeleccionado">
+        <ion-select-option value="default">Por defecto</ion-select-option>
+        <ion-select-option value="mayor">Mayor puntuación</ion-select-option>
+        <ion-select-option value="menor">Menor puntuación</ion-select-option>
+      </ion-select>
+    </ion-item> -->
 
     <ion-grid *ngIf="getConcursantesFiltrados().length > 0; else noResults">
       <ion-row>

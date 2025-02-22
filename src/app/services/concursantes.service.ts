@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, getDoc, doc, updateDoc, collectionData, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, getDoc, doc, updateDoc, collectionData, setDoc, collectionSnapshots } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
 import { map, Observable } from 'rxjs';
 
@@ -81,15 +81,17 @@ export class ConcursantesService {
     return collectionData(evaluacionesRef, { idField: 'id' });
   }
 
-  /** ✅ Obtener el total de evaluaciones y puntuaciones de un concursante */
-
-   obtenerTotalPuntuacion(concursanteId: string): Observable<number> {
+  /** ✅ Obtiene todas las evaluaciones de un concursante y suma sus puntuaciones en tiempo real */
+  obtenerTotalPuntuacion(concursanteId: string): Observable<number> {
     const evaluacionesRef = collection(this.firestore, `concursantes/${concursanteId}/evaluaciones`);
 
-    return collectionData(evaluacionesRef).pipe(
-      map((evaluaciones: any[]) => {
-        const total = evaluaciones.reduce((sum, evalData) => sum + evalData.puntuacion, 0);
-        console.log(`📌 Total de puntos para concursante ${concursanteId}:`, total);
+    return collectionSnapshots(evaluacionesRef).pipe(
+      map(snapshot => {
+        let total = 0;
+        snapshot.forEach(doc => {
+          total += doc.data()['puntuacion'] || 0;
+        });
+        console.log(`📌 Total de puntos actualizado en tiempo real para concursante ${concursanteId}:`, total);
         return total;
       })
     );

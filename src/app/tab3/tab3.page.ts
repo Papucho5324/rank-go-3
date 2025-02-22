@@ -13,6 +13,7 @@ export class Tab3Page implements OnInit {
   categorias: string[] = [];
   concursantes: any[] = [];
   categoriaSeleccionada: string = '';
+  ordenSeleccionado: string = 'default'; // 🔹 Nuevo: opción de ordenamiento
 
   constructor(
     private resultadosService: ResultadosService,
@@ -23,10 +24,10 @@ export class Tab3Page implements OnInit {
     this.concursantesService.obtenerConcursantes().subscribe(concursantes => {
       this.concursantes = concursantes.map(concursante => ({
         ...concursante,
-        totalPuntos: 0 // Inicialmente 0, luego se actualizará
+        totalPuntos: 0
       }));
 
-      // 🔹 Obtener la puntuación total de cada concursante
+      // 🔄 Suscribir cada concursante a su puntuación en tiempo real
       this.concursantes.forEach(concursante => {
         this.concursantesService.obtenerTotalPuntuacion(concursante.id).subscribe(total => {
           concursante.totalPuntos = total;
@@ -40,10 +41,19 @@ export class Tab3Page implements OnInit {
     });
   }
 
+  /** 🔹 Filtrar y ordenar concursantes según la selección del usuario */
   getConcursantesFiltrados() {
-    if (!this.categoriaSeleccionada) {
-      return this.concursantes;
+    let concursantesFiltrados = this.categoriaSeleccionada
+      ? this.concursantes.filter(concursante => concursante.categoria === this.categoriaSeleccionada)
+      : [...this.concursantes];
+
+    // 🔹 Aplicar ordenación según la selección
+    if (this.ordenSeleccionado === 'mayor') {
+      return concursantesFiltrados.sort((a, b) => b.totalPuntos - a.totalPuntos);
     }
-    return this.concursantes.filter(concursante => concursante.categoria === this.categoriaSeleccionada);
+    if (this.ordenSeleccionado === 'menor') {
+      return concursantesFiltrados.sort((a, b) => a.totalPuntos - b.totalPuntos);
+    }
+    return concursantesFiltrados; // Default: sin orden específico
   }
 }
