@@ -6,7 +6,7 @@
     <ion-buttons slot="end">
       <ion-button (click)="logout()">
         <ion-icon slot="icon-only" ios="logo-apple" md="log-out-outline"></ion-icon>
-        
+
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -17,10 +17,10 @@
     <ion-toolbar>
       <ion-title size="large">Evaluar</ion-title>
     </ion-toolbar>
-
   </ion-header>
 
   <div class="container">
+    <h2 class="title" style="text-align: center;">Evaluar Concursante</h2><br>
     <ion-item>
       <ion-label>Selecciona Concursante</ion-label>
       <ion-select [(ngModel)]="concursanteSeleccionado" (ionChange)="cargarCategoriaYRubrica()">
@@ -70,5 +70,7 @@
     </ion-button>
 
   </div>
+
+  <ion-toast></ion-toast>
 
 </ion-content>
