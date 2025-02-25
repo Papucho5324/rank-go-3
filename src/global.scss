@@ -37,29 +37,29 @@
 @import "@ionic/angular/css/palettes/dark.system.css";
 
 
-:root {
-  --ion-safe-area-top: env(safe-area-inset-top);
-  --ion-safe-area-bottom: env(safe-area-inset-bottom);
-  --ion-safe-area-left: env(safe-area-inset-left);
-  --ion-safe-area-right: env(safe-area-inset-right);
-}
+// :root {
+//   --ion-safe-area-top: env(safe-area-inset-top);
+//   --ion-safe-area-bottom: env(safe-area-inset-bottom);
+//   --ion-safe-area-left: env(safe-area-inset-left);
+//   --ion-safe-area-right: env(safe-area-inset-right);
+// }
 
-ion-header {
-  padding-top: var(--ion-safe-area-top);
-}
+// ion-header {
+//   padding-top: var(--ion-safe-area-top);
+// }
 
-ion-content {
-  padding-bottom: var(--ion-safe-area-bottom);
-}
+// ion-content {
+//   padding-bottom: var(--ion-safe-area-bottom);
+// }
 
-.header-title {
-  display: flex;
-  justify-content: center; /* Centra horizontalmente */
-  align-items: center; /* Centra verticalmente */
-  height: 100%;
-}
+// .header-title {
+//   display: flex;
+//   justify-content: center; /* Centra horizontalmente */
+//   align-items: center; /* Centra verticalmente */
+//   height: 100%;
+// }
 
-.logo {
-  max-width: 120px; /* Ajusta el tamaño del logo */
-  height: auto;
-}
+// .logo {
+//   max-width: 120px; /* Ajusta el tamaño del logo */
+//   height: auto;
+// }
