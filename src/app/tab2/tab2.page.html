@@ -1,27 +1,26 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Evaluar
-    </ion-title>
+  <ion-toolbar class="header-toolbar">
+    <ion-title class="header-title">Evaluar</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="logout()">
-        <ion-icon slot="icon-only" ios="logo-apple" md="log-out-outline"></ion-icon>
-
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Evaluar</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="content-background">
 
-  <div class="container">
-    <h2 class="title" style="text-align: center;">Evaluar Concursante</h2><br>
-    <ion-item>
+  <!-- Información del Evaluador -->
+  <div class="weather-card">
+    <h1 class="temperature">Evaluación</h1>
+    <p class="weather-text">Selecciona un concursante y asigna puntuación</p>
+  </div>
+
+  <div class="evaluar-container">
+
+    <!-- Selección de Concursante -->
+    <ion-item class="custom-item">
       <ion-label>Selecciona Concursante</ion-label>
       <ion-select [(ngModel)]="concursanteSeleccionado" (ionChange)="cargarCategoriaYRubrica()">
         <ion-select-option *ngFor="let concursante of concursantes" [value]="concursante">
@@ -30,47 +29,49 @@
       </ion-select>
     </ion-item>
 
-    <ion-item *ngIf="categoriaSeleccionada">
-      <ion-label class="ion-padding">Categoría </ion-label>
+    <!-- Categoría -->
+    <ion-item class="custom-item" *ngIf="categoriaSeleccionada">
+      <ion-label>Categoría</ion-label>
       <ion-input [(ngModel)]="categoriaSeleccionada" readonly></ion-input>
     </ion-item>
 
-    <ion-card *ngFor="let aspecto of rubricaActual">
-      <ion-card-header>
-        <ion-card-title>{{ aspecto.nombre }}</ion-card-title>
-      </ion-card-header>
+    <!-- Tarjetas de Evaluación -->
+    <div class="rubrica-container">
+      <ion-card *ngFor="let aspecto of rubricaActual" class="custom-card">
+        <ion-card-header>
+          <ion-card-title>{{ aspecto.nombre }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p>{{ aspecto.descripcion }}</p>
+          <ion-radio-group [(ngModel)]="aspecto.puntuacion">
+            <ion-item>
+              <ion-label>Excelente (5)</ion-label>
+              <ion-radio slot="end" [value]="5"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Bueno (3)</ion-label>
+              <ion-radio slot="end" [value]="3"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Necesita mejorar (1)</ion-label>
+              <ion-radio slot="end" [value]="1"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-card-content>
+      </ion-card>
+    </div>
 
-      <ion-card-content>
-        <p>{{ aspecto.descripcion }}</p> <!-- 🔹 Ahora sí muestra la descripción -->
-
-        <ion-radio-group [(ngModel)]="aspecto.puntuacion">
-          <ion-item>
-            <ion-label>Excelente (5)</ion-label>
-            <ion-radio slot="end" [value]="5"></ion-radio>
-          </ion-item>
-          <ion-item>
-            <ion-label>Bueno (3)</ion-label>
-            <ion-radio slot="end" [value]="3"></ion-radio>
-          </ion-item>
-          <ion-item>
-            <ion-label>Necesita mejorar (1)</ion-label>
-            <ion-radio slot="end" [value]="1"></ion-radio>
-          </ion-item>
-        </ion-radio-group>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-item>
+    <!-- Observaciones -->
+    <ion-item class="custom-item">
       <ion-label position="stacked">Observaciones</ion-label>
-      <ion-textarea [(ngModel)]="observaciones"></ion-textarea>
+      <ion-textarea [(ngModel)]="observaciones" class="custom-textarea"></ion-textarea>
     </ion-item>
 
-    <ion-button expand="full" (click)="guardarEvaluacion()">
+    <!-- Botón Guardar -->
+    <ion-button expand="full" class="btn-save" (click)="guardarEvaluacion()">
       Guardar Evaluación
     </ion-button>
 
   </div>
-
-  <ion-toast></ion-toast>
 
 </ion-content>

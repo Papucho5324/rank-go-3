@@ -22,7 +22,18 @@ export class LoginPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Puedes eliminar este método si no lo necesitas
+    this.startImageCarousel();
+    }
+
+  startImageCarousel() {
+    let slides = document.querySelectorAll('.carousel-slide');
+    let index = 0;
+
+    setInterval(() => {
+      slides.forEach((slide) => slide.classList.remove('active'));
+      slides[index].classList.add('active');
+      index = (index + 1) % slides.length;
+    }, 5000); // Cambia cada 5 segundos
   }
 
   async login(): Promise<void> {
