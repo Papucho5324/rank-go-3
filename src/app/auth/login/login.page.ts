@@ -38,11 +38,11 @@ export class LoginPage implements OnInit {
 
   scrollToBottom() {
     setTimeout(() => {
-      const content = document.querySelector('ion-content');
+      const content = document.querySelector('ion-content') as any;
       if (content) {
         content.scrollToBottom(300);
       }
-    }, 300);
+    }, 500); 
   }
 
   async login(): Promise<void> {
