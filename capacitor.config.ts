@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'RankGo3',
+  appName: 'ShowTalentos',
   webDir: 'www',
   plugins: {
     SplashScreen: {
@@ -12,9 +12,7 @@ const config: CapacitorConfig = {
       showSpinner: true,         // Mostrar un spinner de carga
       backgroundColor: '#FFFFFF' // Color de fondo del splash
     },
-    "Keyboard": {
-    "resize": "ionic"
-  }
+
   }
 };
 

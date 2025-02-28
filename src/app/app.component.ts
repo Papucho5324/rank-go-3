@@ -13,6 +13,7 @@ export class AppComponent {
   constructor(private authService:AuthService) {
     this.setDarkMode();
   }
+  
 
   setDarkMode() {
     document.body.classList.add('dark'); // ✅ Activa el modo oscuro por defecto

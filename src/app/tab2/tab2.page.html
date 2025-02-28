@@ -1,14 +1,23 @@
 
 
 <ion-content [fullscreen]="true" class="content-background">
-  <ion-buttons slot="end">
-    <ion-button (click)="logout()">
-      <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
-    </ion-button>
-  </ion-buttons>
 
   <!-- Información del Evaluador -->
   <div class="weather-card">
+    <div class="header">
+
+      <ion-buttons slot="end">
+        <ion-item color="none">
+          <ion-avatar aria-hidden="true" slot="start">
+            <img alt="" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+          </ion-avatar>
+          <ion-label>{{nombreUsuario}}</ion-label>
+        </ion-item>
+        <ion-button (click)="logout()">
+          <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
     <h1 class="title">Evaluación</h1>
     <p class="weather-text">Selecciona un concursante y asigna puntuación</p>
   </div>

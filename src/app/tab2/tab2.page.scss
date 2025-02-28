@@ -82,3 +82,11 @@ ion-content {
   color: var(--secondary-color);
   margin-bottom: 20px;
 }
+
+.header{
+  display: flex;
+  justify-content: right;
+  width: 100%;
+  align-items: end;
+  margin-bottom: 20px;
+}

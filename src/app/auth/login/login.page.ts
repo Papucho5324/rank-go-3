@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/services/auth-service.service';
 import { Router } from '@angular/router';
 import { Keyboard } from '@capacitor/keyboard';
 import { IonContent } from '@ionic/angular';
+import { Capacitor } from '@capacitor/core';
 
 
 @Component({
@@ -29,9 +30,12 @@ export class LoginPage implements OnInit {
   ngOnInit() {
     this.startImageCarousel();
     // Escuchar cuando el teclado se abre
+
+    if (Capacitor.isNativePlatform()) {
     Keyboard.addListener('keyboardDidShow', (info) => {
       this.adjustForKeyboard(info.keyboardHeight);
     });
+  }
 
     // Escuchar cuando el teclado se cierra
     Keyboard.addListener('keyboardDidHide', () => {

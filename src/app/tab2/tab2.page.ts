@@ -4,6 +4,7 @@ import { NavController } from '@ionic/angular';
 import { ConcursantesService } from '../services/concursantes.service';
 import { InteractionService } from '../services/interaction.service';
 import { firstValueFrom, take } from 'rxjs';
+import { AuthService } from '../services/auth-service.service';
 
 @Component({
   selector: 'app-tab2',
@@ -22,7 +23,7 @@ export class Tab2Page {
   observaciones: string = '';
   rubricaActual: any[] = [];
   promedio: number = 0;
-  // Removed incorrect property initialization
+  nombreUsuario: string = '';
 
 
 
@@ -75,7 +76,9 @@ export class Tab2Page {
   constructor(
     private navCtrl: NavController,
     private concursantesService: ConcursantesService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+
   ) {}
 
   /** 🔹 Cierra sesión del usuario */
@@ -91,7 +94,6 @@ export class Tab2Page {
       });
   }
 
-  //** 🔹 Obtiene los concursantes faltantes por evaluar al cargar la página */
   /** 🔹 Obtiene los concursantes faltantes por evaluar al cargar la página */
 ngOnInit() {
   // 📌 Se suscribe al estado de autenticación
@@ -122,6 +124,14 @@ ngOnInit() {
 
         console.log("📌 Concursantes disponibles para evaluar:", this.concursantes);
         this.cdr.detectChanges();
+
+        // 📌 Obtiene el nombre del usuario
+        this.authService.obtenerDatosUsuario().subscribe(data => {
+          if (data) {
+            this.nombreUsuario = data.nombre;
+            this.cdr.detectChanges();
+          }
+        });
       });
     } catch (error) {
       console.error("❌ Error al obtener los concursantes:", error);
