@@ -1,19 +1,15 @@
-<ion-header [translucent]="true">
-  <ion-toolbar class="header-toolbar">
-    <ion-title class="header-title">Evaluar</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="logout()">
-        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+
 
 <ion-content [fullscreen]="true" class="content-background">
+  <ion-buttons slot="end">
+    <ion-button (click)="logout()">
+      <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
 
   <!-- Información del Evaluador -->
   <div class="weather-card">
-    <h1 class="temperature">Evaluación</h1>
+    <h1 class="title">Evaluación</h1>
     <p class="weather-text">Selecciona un concursante y asigna puntuación</p>
   </div>
 

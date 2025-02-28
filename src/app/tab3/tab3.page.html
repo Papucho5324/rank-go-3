@@ -1,48 +1,27 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Resultados</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true" class="ion-padding">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Resultados</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
+<ion-content>
   <div class="container">
     <h2 class="title" style="text-align: center;">Concursantes Evaluados</h2><br>
     <ion-item>
       <ion-label>Categoría</ion-label>
-      <ion-select [(ngModel)]="categoriaSeleccionada">
+      <ion-select [(ngModel)]="categoriaSeleccionada" class="ion-padding">
         <ion-select-option value="">Todas</ion-select-option>
         <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</ion-select-option>
       </ion-select>
 
       <ion-label>Ordenar por</ion-label>
-      <ion-select [(ngModel)]="ordenSeleccionado">
-        <ion-select-option value="default">Por defecto</ion-select-option>
+      <ion-select [(ngModel)]="ordenSeleccionado" class="ion-padding">
         <ion-select-option value="mayor">Mayor puntuación</ion-select-option>
         <ion-select-option value="menor">Menor puntuación</ion-select-option>
       </ion-select>
     </ion-item>
-<br>
-    <!-- <ion-item>
-      <ion-label>Ordenar por</ion-label>
-      <ion-select [(ngModel)]="ordenSeleccionado">
-        <ion-select-option value="default">Por defecto</ion-select-option>
-        <ion-select-option value="mayor">Mayor puntuación</ion-select-option>
-        <ion-select-option value="menor">Menor puntuación</ion-select-option>
-      </ion-select>
-    </ion-item> -->
+    <br>
 
     <ion-grid *ngIf="getConcursantesFiltrados().length > 0; else noResults">
       <ion-row>
         <ion-col><strong>Concursante</strong></ion-col>
         <ion-col><strong>Puntuación Final</strong></ion-col>
       </ion-row>
-      <ion-row *ngFor="let concursante of getConcursantesFiltrados()">
+      <ion-row *ngFor="let concursante of getConcursantesPaginados()">
         <ion-col>{{ concursante.nombre }}</ion-col>
         <ion-col>{{ concursante.totalPuntos }}</ion-col>
       </ion-row>
@@ -51,5 +30,26 @@
     <ng-template #noResults>
       <p>No hay concursantes evaluados aún.</p>
     </ng-template>
+
   </div>
 </ion-content>
+<!-- Paginación -->
+<ion-footer *ngIf="getTotalPages() > 1">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+        Anterior
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button [disabled]="currentPage === getTotalPages()" (click)="changePage(currentPage + 1)">
+        Siguiente
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">
+      Página {{ currentPage }} de {{ getTotalPages() }}
+    </ion-title>
+  </ion-toolbar>
+</ion-footer>

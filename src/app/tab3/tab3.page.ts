@@ -13,7 +13,11 @@ export class Tab3Page implements OnInit {
   categorias: string[] = [];
   concursantes: any[] = [];
   categoriaSeleccionada: string = '';
-  ordenSeleccionado: string = 'default'; // 🔹 Nuevo: opción de ordenamiento
+  ordenSeleccionado: string = 'mayor'; // 🔹 Cambiado a 'mayor' por defecto
+
+  // Paginación
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
 
   constructor(
     private resultadosService: ResultadosService,
@@ -62,5 +66,22 @@ export class Tab3Page implements OnInit {
           ? `${concursante.nombre} (${concursante.categoria})`
           : concursante.nombre
     }));
+  }
+
+  /** 🔹 Obtener concursantes para la página actual */
+  getConcursantesPaginados() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.getConcursantesFiltrados().slice(startIndex, endIndex);
+  }
+
+  /** 🔹 Cambiar de página */
+  changePage(page: number) {
+    this.currentPage = page;
+  }
+
+  /** 🔹 Obtener el número total de páginas */
+  getTotalPages() {
+    return Math.ceil(this.getConcursantesFiltrados().length / this.itemsPerPage);
   }
 }
