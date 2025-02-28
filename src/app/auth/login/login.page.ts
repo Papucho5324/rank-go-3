@@ -36,6 +36,15 @@ export class LoginPage implements OnInit {
     }, 5000); // Cambia cada 5 segundos
   }
 
+  scrollToBottom() {
+    setTimeout(() => {
+      const content = document.querySelector('ion-content');
+      if (content) {
+        content.scrollToBottom(300);
+      }
+    }, 300);
+  }
+
   async login(): Promise<void> {
     if (!this.email.trim() || !this.password.trim()) {
       this.errorMessage = 'Por favor, ingresa un correo y una contraseña.';

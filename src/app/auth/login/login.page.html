@@ -29,7 +29,9 @@
             name="email"
             type="email"
             class="input"
-            placeholder="Email or Phone">
+            placeholder="Email or Phone"
+            (ionFocus)="scrollToBottom()"
+            required="true">
             </ion-input>
         </ion-item>
 
@@ -40,7 +42,9 @@
             type="password"
             labelPlacement="stacked"
             class="input"
-            placeholder="Password">
+            placeholder="Password"
+            (ionFocus)="scrollToBottom()"
+            required="true">
           </ion-input>
         </ion-item>
 
