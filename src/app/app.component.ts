@@ -10,7 +10,13 @@ import { AuthService } from './services/auth-service.service';
 })
 export class AppComponent {
 
-  constructor(private authService:AuthService) {}
+  constructor(private authService:AuthService) {
+    this.setDarkMode();
+  }
+
+  setDarkMode() {
+    document.body.classList.add('dark'); // ✅ Activa el modo oscuro por defecto
+  }
 
 
 
