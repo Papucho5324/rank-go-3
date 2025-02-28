@@ -33,7 +33,7 @@ export class LoginPage implements OnInit {
       slides.forEach((slide) => slide.classList.remove('active'));
       slides[index].classList.add('active');
       index = (index + 1) % slides.length;
-    }, 5000); // Cambia cada 5 segundos
+    }, 4000); 
   }
 
   scrollToBottom() {
@@ -42,7 +42,7 @@ export class LoginPage implements OnInit {
       if (content) {
         content.scrollToBottom(300);
       }
-    }, 500); 
+    }, 500);
   }
 
   async login(): Promise<void> {

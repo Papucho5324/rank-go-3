@@ -83,3 +83,8 @@
   border-radius: 8px;
   padding: 12px;
 }
+
+ion-content {
+  --keyboard-offset: 20px;
+  scroll-padding-bottom: 150px;
+}
