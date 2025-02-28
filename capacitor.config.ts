@@ -11,7 +11,10 @@ const config: CapacitorConfig = {
       androidScaleType: 'CENTER_CROP', // Ajuste de la imagen en Android
       showSpinner: true,         // Mostrar un spinner de carga
       backgroundColor: '#FFFFFF' // Color de fondo del splash
-    }
+    },
+    "Keyboard": {
+    "resize": "ionic"
+  }
   }
 };
 
