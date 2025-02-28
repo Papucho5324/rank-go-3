@@ -1,6 +1,6 @@
 
 
-<ion-content #content [fullscreen]="true" keyboard-attach class="content-background">
+<ion-content #content [fullscreen]="true" class="content-background">
 
   <!-- Contenedor del carrusel -->
   <div class="carousel-container">
@@ -30,7 +30,6 @@
             type="email"
             class="input"
             placeholder="Email or Phone"
-            (ionFocus)="scrollToBottom()"
             required="true">
             </ion-input>
         </ion-item>
@@ -43,7 +42,6 @@
             labelPlacement="stacked"
             class="input"
             placeholder="Password"
-            (ionFocus)="scrollToBottom()"
             required="true">
           </ion-input>
         </ion-item>
