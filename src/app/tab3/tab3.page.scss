@@ -86,6 +86,11 @@ ion-col {
 
 /* Diseño responsivo */
 @media (max-width: 768px) {
+  .tab3 {
+    justify-content: flex-start;
+    margin-top: env(safe-area-inset-top);
+    margin-top: 100px;
+  }
   .title {
     font-size: 1.6rem;
   }

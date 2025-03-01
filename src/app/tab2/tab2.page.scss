@@ -90,3 +90,24 @@ ion-content {
   align-items: end;
   margin-bottom: 20px;
 }
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .tab2 {
+    justify-content: flex-start;
+    margin-top: env(safe-area-inset-top);
+    margin-top: 100px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .form-container {
+    padding: 20px;
+  }
+
+  .btn {
+    padding: 10px;
+  }
+}
