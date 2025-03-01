@@ -11,7 +11,6 @@
   padding-bottom: 300px;
 }
 
-
 /* Contenedor del carrusel de fondo */
 .carousel-container {
   position: absolute;
@@ -43,10 +42,12 @@
 .login-container {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  height: 100vh;
-  position: relative;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-top: 20px; /* Ajusta este valor según sea necesario */
 }
 
 /* Tarjeta flotante */
@@ -58,8 +59,6 @@
   border-radius: 30px;
   text-align: center;
   box-shadow: 0px -5px 15px rgba(0, 0, 0, 0.2);
-  position: absolute;
-  bottom: 5%;
 }
 
 .google-icon img {
@@ -89,9 +88,14 @@ ion-content {
   scroll-padding-bottom: 100px;
 }
 
-
 /* Responsive design */
 @media (max-width: 768px) {
+  .login-container {
+    justify-content: flex-start;
+    margin-top: env(safe-area-inset-top);
+    margin-top: 100px;
+  }
+
   .title {
     font-size: 1.5rem;
   }
