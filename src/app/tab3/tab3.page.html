@@ -35,24 +35,24 @@
     </ng-template>
 
   </div>
+  <!-- Paginación -->
+  <ion-footer *ngIf="getTotalPages() > 1" class="footer">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+          Anterior
+        </ion-button>
+      </ion-buttons>
+
+      <ion-title class="ion-text-center">
+        Página {{ currentPage }} de {{ getTotalPages() }}
+      </ion-title>
+
+      <ion-buttons slot="end">
+        <ion-button [disabled]="currentPage === getTotalPages()" (click)="changePage(currentPage + 1)">
+          Siguiente
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
 </ion-content>
-<!-- Paginación -->
-<ion-footer *ngIf="getTotalPages() > 1" class="footer">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
-        Anterior
-      </ion-button>
-    </ion-buttons>
-
-    <ion-title class="ion-text-center">
-      Página {{ currentPage }} de {{ getTotalPages() }}
-    </ion-title>
-
-    <ion-buttons slot="end">
-      <ion-button [disabled]="currentPage === getTotalPages()" (click)="changePage(currentPage + 1)">
-        Siguiente
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-footer>

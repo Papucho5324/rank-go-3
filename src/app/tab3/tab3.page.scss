@@ -7,14 +7,9 @@
   --table-header-bg: rgba(255, 255, 255, 0.2);
   --hover-bg: rgba(255, 255, 255, 0.15);
   font-family: 'Poppins', sans-serif;
+
 }
 
-ion-content {
-  // --background: var(--background-color);
-  // padding: 20px;
-  background-image: repeating-radial-gradient(  #0c0a0a 80%,#2f312f 90%,#3f4549 90%);
-  background-size: 65px 65px;
-}
 
 /* Contenedor */
 .container {
@@ -24,6 +19,13 @@ ion-content {
   background-image: repeating-radial-gradient(  #0c0a0a 80%,#2f312f 90%,#3f4549 90%);
   background-size: 65px 65px;
 
+}
+
+.tab3{
+  width: 100%;
+  height: 100%;
+  background-image: repeating-radial-gradient(  #0c0a0a 80%,#2f312f 90%,#3f4549 90%);
+  background-size: 65px 65px;
 }
 
 /* Título principal */

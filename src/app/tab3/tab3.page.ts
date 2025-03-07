@@ -17,7 +17,7 @@ export class Tab3Page implements OnInit {
 
   // Paginación
   currentPage: number = 1;
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 7;
 
   constructor(
     private resultadosService: ResultadosService,
