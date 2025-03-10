@@ -18,6 +18,8 @@
   height: 100%;
   background-image: repeating-radial-gradient(  #0c0a0a 80%,#2f312f 90%,#3f4549 90%);
   background-size: 65px 65px;
+  margin-top: env(safe-area-inset-top);
+  --padding-bottom: env(safe-area-inset-bottom);
 
 }
 
@@ -104,6 +106,7 @@ ion-col {
     justify-content: flex-start;
     margin-top: env(safe-area-inset-top);
     margin-top: 100px;
+    --padding-bottom: env(safe-area-inset-bottom);
   }
   .title {
     font-size: 1.6rem;
@@ -117,6 +120,7 @@ ion-col {
     font-size: 1rem;
     padding: 10px;
   }
+
 }
 
 

@@ -19,7 +19,7 @@ import { environment } from '../environments/environment';
   providers: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)), // ✅ Mover a providers
     provideFirestore(() => getFirestore()), // ✅ Mover a providers
-    provideAuth(() => getAuth()), 
+    provideAuth(() => getAuth()),
   ],
   bootstrap: [AppComponent]
 })

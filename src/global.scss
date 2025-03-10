@@ -41,6 +41,9 @@
   --ion-color-primary: #121212;
   --ion-background-color: #000;
   --ion-text-color: #fff;
+  margin-top: env(safe-area-inset-top);
+  margin-bottom: env(safe-area-inset-bottom);
+  --padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* Asegurar que toda la app use el modo oscuro */
@@ -57,3 +60,8 @@ body {
   --ion-item-background: #222;
   --ion-toolbar-background: #121212;
 }
+
+ion-content {
+  --padding-bottom: env(safe-area-inset-bottom);
+}
+

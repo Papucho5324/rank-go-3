@@ -97,7 +97,7 @@ ion-content {
   .tab2 {
     justify-content: flex-start;
     margin-top: env(safe-area-inset-top);
-    margin-top: 100px;
+    --padding-bottom: env(safe-area-inset-bottom);
   }
 
   .title {
