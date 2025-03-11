@@ -19,6 +19,13 @@ export class Tab3Page implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 7;
 
+  doRefresh(event: CustomEvent) {
+    setTimeout(() => {
+      // Any calls to load data go here
+      (event.target as HTMLIonRefresherElement).complete();
+    }, 2000);
+  }
+
   constructor(
     private resultadosService: ResultadosService,
     private concursantesService: ConcursantesService

@@ -25,6 +25,13 @@ export class Tab2Page {
   promedio: number = 0;
   nombreUsuario: string = '';
 
+  doRefresh(event: CustomEvent) {
+    setTimeout(() => {
+      // Any calls to load data go here
+      (event.target as HTMLIonRefresherElement).complete();
+    }, 2000);
+  }
+
 
 
   rubricas: Record<string, { nombre: string; puntuacion: number | null; descripcion: string }[]> = {

@@ -1,4 +1,7 @@
 <ion-content class="tab3">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div class="container">
     <div class="title-card ion-padding ">
 

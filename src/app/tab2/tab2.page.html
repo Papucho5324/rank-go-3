@@ -1,6 +1,9 @@
 
 
 <ion-content [fullscreen]="true" class="container">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
   <!-- Información del Evaluador -->
   <div class="weather-card">
