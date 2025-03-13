@@ -4,6 +4,7 @@ import { NavController } from '@ionic/angular';
 import { ConcursantesService } from '../services/concursantes.service';
 import { InteractionService } from '../services/interaction.service';
 import { firstValueFrom, take } from 'rxjs';
+import { AuthService } from '../services/auth-service.service';
 
 @Component({
   selector: 'app-tab2',
@@ -22,7 +23,15 @@ export class Tab2Page {
   observaciones: string = '';
   rubricaActual: any[] = [];
   promedio: number = 0;
-  // Removed incorrect property initialization
+  nombreUsuario: string = '';
+
+  doRefresh(event: CustomEvent) {
+    setTimeout(() => {
+
+      this.ngOnInit();
+      (event.target as HTMLIonRefresherElement).complete();
+    }, 2000);
+  }
 
 
 
@@ -75,15 +84,18 @@ export class Tab2Page {
   constructor(
     private navCtrl: NavController,
     private concursantesService: ConcursantesService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+    private interactionService: InteractionService
+
   ) {}
 
   /** 🔹 Cierra sesión del usuario */
   logout(): void {
-    console.log("🔹 Intentando cerrar sesión...");
+    ("🔹 Intentando cerrar sesión...");
     signOut(this.auth)
       .then(() => {
-        console.log('✅ Sesión cerrada correctamente');
+        ('✅ Sesión cerrada correctamente');
         this.navCtrl.navigateRoot('/login');
       })
       .catch(error => {
@@ -91,7 +103,6 @@ export class Tab2Page {
       });
   }
 
-  //** 🔹 Obtiene los concursantes faltantes por evaluar al cargar la página */
   /** 🔹 Obtiene los concursantes faltantes por evaluar al cargar la página */
 ngOnInit() {
   // 📌 Se suscribe al estado de autenticación
@@ -106,7 +117,6 @@ ngOnInit() {
     try {
       // 📌 Obtiene concursantes una sola vez
       this.concursantesService.obtenerConcursantes().pipe(take(1)).subscribe(async (data) => {
-        console.log("📌 Todos los concursantes obtenidos:", data);
 
         const evaluacionesPromises = data.map(async (concursante) => {
           return await firstValueFrom(this.concursantesService.obtenerEvaluaciones(concursante.id));
@@ -120,8 +130,15 @@ ngOnInit() {
           return !yaEvaluado;
         });
 
-        console.log("📌 Concursantes disponibles para evaluar:", this.concursantes);
         this.cdr.detectChanges();
+
+        // 📌 Obtiene el nombre del usuario
+        this.authService.obtenerDatosUsuario().subscribe(data => {
+          if (data) {
+            this.nombreUsuario = data.nombre;
+            this.cdr.detectChanges();
+          }
+        });
       });
     } catch (error) {
       console.error("❌ Error al obtener los concursantes:", error);
@@ -150,18 +167,16 @@ cargarCategoriaYRubrica() {
       return acc;
     }, {} as Record<string, any>);
 
-    console.log("📌 Categoría seleccionada:", this.categoriaSeleccionada);
-    console.log("📌 Categoría normalizada:", categoriaNormalizada);
-    console.log("📌 Claves disponibles en rubricas:", Object.keys(rubricasNormalizadas));
 
     this.rubricaActual = rubricasNormalizadas[categoriaNormalizada]
       ? rubricasNormalizadas[categoriaNormalizada].map((aspecto: { nombre: string; puntuacion: number | null; descripcion: string }) => ({ nombre: aspecto.nombre, puntuacion: aspecto.puntuacion, descripcion: aspecto.descripcion }))
       : [];
 
-    console.log("📌 Rúbrica cargada:", this.rubricaActual);
     this.cdr.detectChanges();
   } else {
-    console.warn("⚠️ No se ha seleccionado ningún concursante.");
+    // console.warn("⚠️ No se ha seleccionado ningún concursante.");
+    this.interactionService.showToast('⚠️ No se ha seleccionado ningún concursante.', 2000, 'top');
+
     this.categoriaSeleccionada = '';
     this.rubricaActual = [];
   }
@@ -173,17 +188,17 @@ cargarCategoriaYRubrica() {
   /** 🔹 Guardar la evaluación en Firebase */
   async guardarEvaluacion() {
     if (!this.concursanteSeleccionado) {
-      alert('⚠️ Debes seleccionar un concursante antes de guardar.');
+      await this.interactionService.showToast('⚠️ Debes seleccionar un concursante antes de guardar.', 2000, 'top');
       return;
     }
 
     if (this.rubricaActual.length === 0) {
-      alert('⚠️ No hay una rúbrica disponible para esta categoría.');
+      await this.interactionService.showToast('⚠️ No hay una rúbrica disponible para esta categoría', 2000, 'top');
       return;
     }
 
     if (this.rubricaActual.some(aspecto => aspecto.puntuacion === null)) {
-      alert('⚠️ Debes evaluar todos los aspectos antes de guardar.');
+      await this.interactionService.showToast('⚠️ Debes evaluar todos los aspectos antes de guardar.', 2000, 'top');
       return;
     }
 
@@ -205,7 +220,7 @@ cargarCategoriaYRubrica() {
       // 🔹 Actualizar el estado del concursante en Firebase
       await this.concursantesService.actualizarConcursante(this.concursanteSeleccionado.id);
 
-      alert('✅ Evaluación guardada correctamente.');
+      await this.interactionService.showToast('✅ Concursante evaluado con éxito.', 2000, 'top');
 
       // 🔹 Eliminar al concursante de la lista en la UI
       this.concursantes = this.concursantes.filter(c => c !== this.concursanteSeleccionado);

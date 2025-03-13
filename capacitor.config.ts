@@ -2,8 +2,21 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'RankGo3',
-  webDir: 'www'
+  appName: 'ShowTalentos',
+  webDir: 'www',
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 3000,
+      launchAutoHide: true,
+      androidScaleType: 'CENTER_CROP',
+      showSpinner: true,
+      backgroundColor: '#FFFFFF'
+    },
+    android: {
+      fullscreen: false
+    }
+
+  }
 };
 
 export default config;

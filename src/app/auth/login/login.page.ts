@@ -1,6 +1,10 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth-service.service';
 import { Router } from '@angular/router';
+import { Keyboard } from '@capacitor/keyboard';
+import { IonContent } from '@ionic/angular';
+import { Capacitor } from '@capacitor/core';
+
 
 @Component({
   selector: 'app-login',
@@ -9,6 +13,8 @@ import { Router } from '@angular/router';
   standalone: false
 })
 export class LoginPage implements OnInit {
+
+  @ViewChild(IonContent, { static: false }) content!: IonContent;
 
   email: string = '';
   password: string = '';
@@ -22,8 +28,48 @@ export class LoginPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Puedes eliminar este método si no lo necesitas
+    this.startImageCarousel();
+    // Escuchar cuando el teclado se abre
+
+    if (Capacitor.isNativePlatform()) {
+    Keyboard.addListener('keyboardDidShow', (info) => {
+      this.adjustForKeyboard(info.keyboardHeight);
+    });
   }
+
+    // Escuchar cuando el teclado se cierra
+    Keyboard.addListener('keyboardDidHide', () => {
+      this.resetScroll();
+    });
+    }
+
+  startImageCarousel() {
+    let slides = document.querySelectorAll('.carousel-slide');
+    let index = 0;
+
+    setInterval(() => {
+      slides.forEach((slide) => slide.classList.remove('active'));
+      slides[index].classList.add('active');
+      index = (index + 1) % slides.length;
+    }, 4000);
+  }
+
+  adjustForKeyboard(keyboardHeight: number) {
+    setTimeout(() => {
+      if (this.content) {
+        this.content.scrollToBottom(300);
+      }
+    }, 300);
+  }
+
+  resetScroll() {
+    setTimeout(() => {
+      if (this.content) {
+        this.content.scrollToTop(300);
+      }
+    }, 300);
+  }
+
 
   async login(): Promise<void> {
     if (!this.email.trim() || !this.password.trim()) {
