@@ -20,7 +20,7 @@
   background-size: 65px 65px;
   margin-top: env(safe-area-inset-top);
   --padding-bottom: env(safe-area-inset-bottom);
-  
+
 
 }
 
@@ -124,20 +124,33 @@ ion-col {
 
 }
 
+.concursante-row {
+  cursor: pointer;
+  position: relative;
 
-// .footer{
-//   left: 0;
-//   bottom: 0;
-//   width: 100%;
-//   height: 100px;
-//   color: white;
-//   text-align: center;
-// }
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
 
-// .container{
-//   width: 100%;
-//   height: 100%;
-//   /* Add your background pattern here */
-//   background-image: repeating-radial-gradient(  #0c0a0a 80%,#2f312f 90%,#3f4549 90%);
-//   background-size: 65px 65px;
-// }
+.expanded-info {
+  background-color: rgba(0, 0, 0, 0.02);
+  animation: fadeIn 0.3s ease-in-out;
+
+  ion-card {
+    margin: 0 8px;
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

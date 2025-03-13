@@ -4,7 +4,6 @@
   </ion-refresher>
   <div class="container">
     <div class="title-card ion-padding ">
-
       <h2 class="title ion-padding ">Concursantes Evaluados</h2><br>
     </div>
     <ion-item>
@@ -27,19 +26,42 @@
         <ion-col><strong>Concursante</strong></ion-col>
         <ion-col><strong>Puntuación Final</strong></ion-col>
       </ion-row>
-      <ion-row *ngFor="let concursante of getConcursantesPaginados()">
-        <ion-col>{{ concursante.nombre }}</ion-col>
-        <ion-col>{{ concursante.totalPuntos }}</ion-col>
-      </ion-row>
+
+      <!-- Por cada concursante, crea una sección expandible -->
+      <ng-container *ngFor="let concursante of getConcursantesPaginados()">
+        <ion-row class="concursante-row" (click)="toggleConcursanteExpanded(concursante.id)">
+          <ion-col>{{ concursante.nombre }}</ion-col>
+          <ion-col>
+            {{ concursante.totalPuntos }}
+            <ion-icon [name]="expandedConcursanteId === concursante.id ? 'chevron-up' : 'chevron-down'"
+                      slot="end"></ion-icon>
+          </ion-col>
+        </ion-row>
+
+        <!-- Información adicional que se muestra cuando está expandido -->
+        <ion-row *ngIf="expandedConcursanteId === concursante.id" class="expanded-info">
+          <ion-col size="12">
+            <ion-card>
+              <ion-card-content>
+                <ion-item>
+                  <ion-label>
+                    <h3>Integrantes:</h3>
+                    <p>{{ concursante.participantes || 'No hay información de integrantes' }}</p>
+                  </ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>
+                    <h3>Turno:</h3>
+                    <p>{{ concursante.turno || 'No especificado' }}</p>
+                  </ion-label>
+                </ion-item>
+                <!-- Puedes añadir más información aquí según necesites -->
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ng-container>
     </ion-grid>
-
-    <!-- <ion-list>
-      <ion-item-group *ngFor="let concursante of concursantes; let i = index">
-
-
-
-      </ion-item-group>
-    </ion-list> -->
 
     <ng-template #noResults>
       <p>No hay concursantes evaluados aún.</p>

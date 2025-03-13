@@ -15,6 +15,8 @@ export class Tab3Page implements OnInit {
   categoriaSeleccionada: string = '';
   ordenSeleccionado: string = 'mayor'; // 🔹 Cambiado a 'mayor' por defecto
 
+  expandedConcursanteId: string | null = null;
+
   // Paginación
   currentPage: number = 1;
   itemsPerPage: number = 7;
@@ -51,6 +53,41 @@ export class Tab3Page implements OnInit {
       this.categorias = [...new Set(data.map(e => e.categoria))];
     });
   }
+
+   // Método para alternar la expansión de un concursante
+   toggleConcursanteExpanded(concursanteId: string) {
+    if (this.expandedConcursanteId === concursanteId) {
+      // Si ya está expandido, lo cerramos
+      this.expandedConcursanteId = null;
+    } else {
+      // Si no está expandido, lo expandimos y cargamos la información adicional
+      this.expandedConcursanteId = concursanteId;
+      this.cargarInformacionAdicional(concursanteId);
+    }
+  }
+
+    // Método para cargar la información adicional del concursante
+    cargarInformacionAdicional(concursanteId: string) {
+      // Verificamos si ya tenemos la información cargada
+      const concursante = this.concursantes.find(c => c.id === concursanteId);
+
+      // Si no tenemos los datos de integrantes o turno, los cargamos
+      if (concursante && (!concursante.participantes
+        || !concursante.turno)) {
+        this.concursantesService.obtenerDetallesConcursante(concursanteId).subscribe(detalles => {
+          // Actualizamos el concursante con la información adicional
+          const index = this.concursantes.findIndex(c => c.id === concursanteId);
+          if (index !== -1) {
+            this.concursantes[index] = {
+              ...this.concursantes[index],
+              participantes: detalles.participantes,
+              turno: detalles.turno
+              // Añade aquí más campos si lo necesitas
+            };
+          }
+        });
+      }
+    }
 
   /** 🔹 Filtrar y ordenar concursantes según la selección del usuario */
   getConcursantesFiltrados() {

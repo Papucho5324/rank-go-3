@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, getDoc, doc, updateDoc, collectionData, setDoc, collectionSnapshots } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, getDoc, doc, updateDoc, collectionData, setDoc, collectionSnapshots, docData } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
 import { map, Observable } from 'rxjs';
 
@@ -33,6 +33,12 @@ export class ConcursantesService {
     } catch (error) {
       console.error("❌ Error al agregar concursante:", error);
     }
+  }
+
+  // Nuevo método para obtener detalles adicionales del concursante
+  obtenerDetallesConcursante(concursanteId: string): Observable<any> {
+    const concursanteDocRef = doc(this.firestore, `concursantes/${concursanteId}`);
+    return docData(concursanteDocRef);
   }
 
   /** ✅ Obtiene todos los concursantes */
