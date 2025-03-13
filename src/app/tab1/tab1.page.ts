@@ -12,6 +12,9 @@ export class Tab1Page {
   nombre: string = "";
   categoria: string = "Talento Escenico"; // Valor predeterminado
   evaluado: boolean = false;
+  turno: string = "";
+  nombreParticipante: string = '';
+  participantes: string[] = [];
 
   // Inyecta los servicios en el constructor
   constructor(
@@ -19,19 +22,34 @@ export class Tab1Page {
     private interactionService: InteractionService
   ) {}
 
+  agregarParticipante(){
+    if(this.nombreParticipante.trim()){
+      this.participantes.push(this.nombreParticipante.trim());
+    }
+  }
+
   async agregarConcursante() {
-    if (this.nombre.trim() === "") {
+    if (this.nombre.trim() === "" || this.categoria.trim() === "" || this.turno.trim() === "") {
       console.log("❌ Ingresa un nombre válido");
       return;
     }
 
     try {
-      await this.concursantesService.agregarConcursante(this.nombre, this.categoria);
+      await this.concursantesService.agregarConcursante(this.nombre, this.categoria, this.turno, this.participantes);
       await this.interactionService.showToast('✅ Concursante agregado con éxito.', 2000, 'top');
-      this.nombre = ""; // Limpiar input
+      this.nombre = ""; // Limpiar
+      this.categoria = "Talento Escenico"; // Restablecer
+      this.turno = ""; // Restablecer
+      this.participantes = []; // Restablecer
+      this.nombreParticipante = ''; // Restablecer
     } catch (error) {
       console.error("❌ Error al agregar concursante:", error);
     }
+  }
+
+  addConcursante(){
+    this.nombreParticipante = ''; // Restablecer
+
   }
 
 }

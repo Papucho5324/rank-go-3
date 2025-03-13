@@ -14,7 +14,7 @@ export class ConcursantesService {
   }
 
   /** ✅ Agrega un concursante a Firestore con un registro de jueces evaluadores */
-  async agregarConcursante(nombre: string, categoria: string): Promise<void> {
+  async agregarConcursante(nombre: string, categoria: string, turno:string, participantes:string[]): Promise<void> {
     try {
       const user = this.auth.currentUser;
       if (!user) {
@@ -28,7 +28,7 @@ export class ConcursantesService {
       }
 
       const concursantesRef = collection(this.firestore, 'concursantes');
-      await addDoc(concursantesRef, { nombre, categoria, evaluaciones: {} });
+      await addDoc(concursantesRef, { nombre, categoria, turno, participantes, evaluaciones: {} });
       console.log("✅ Concursante agregado correctamente");
     } catch (error) {
       console.error("❌ Error al agregar concursante:", error);
