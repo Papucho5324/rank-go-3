@@ -26,8 +26,11 @@
             name="email"
             type="email"
             class="input"
-            placeholder="Correo juez"
-            required="true">
+            placeholder="juez@toros.com"
+            label="Correo"
+            required="true"
+            aria-hidden="true">
+            <ion-icon slot="start" name="mail" aria-hidden="true"></ion-icon>
           </ion-input>
         </ion-item>
 
@@ -36,10 +39,14 @@
             [(ngModel)]="password"
             name="password"
             type="password"
+            [clearInput]="true"
             labelPlacement="stacked"
             class="input"
             placeholder="Contraseña"
+            label="Contraseña"
             required="true">
+            <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
+            <ion-input-password-toggle slot="end"></ion-input-password-toggle>
           </ion-input>
         </ion-item>
 
