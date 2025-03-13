@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Auth, onAuthStateChanged, signOut } from '@angular/fire/auth';
 import { NavController } from '@ionic/angular';
 import { ConcursantesService } from '../services/concursantes.service';
@@ -12,7 +12,7 @@ import { AuthService } from '../services/auth-service.service';
   styleUrls: ['tab2.page.scss'],
   standalone: false,
 })
-export class Tab2Page {
+export class Tab2Page implements OnInit, OnDestroy {
   private auth = inject(Auth);
   private unsubscribeAuthObserver: any;
 
@@ -90,13 +90,11 @@ export class Tab2Page {
 
   ) {}
 
-  /** 🔹 Cierra sesión del usuario */
-  logout(): void {
-    ("🔹 Intentando cerrar sesión...");
+   /** 🔹 Cierra sesión del usuario */
+   logout(): void {
     signOut(this.auth)
       .then(() => {
-        ('✅ Sesión cerrada correctamente');
-        this.navCtrl.navigateRoot('/login');
+        this.navCtrl.navigateRoot('/login', { replaceUrl: true });
       })
       .catch(error => {
         console.error('❌ Error al cerrar sesión:', error);
