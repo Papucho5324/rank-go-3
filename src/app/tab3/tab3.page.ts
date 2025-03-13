@@ -21,7 +21,7 @@ export class Tab3Page implements OnInit {
 
   doRefresh(event: CustomEvent) {
     setTimeout(() => {
-      // Any calls to load data go here
+      this.ngOnInit();
       (event.target as HTMLIonRefresherElement).complete();
     }, 2000);
   }
