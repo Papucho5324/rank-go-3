@@ -8,7 +8,6 @@
           <h2 class="title">Agregar Concursante</h2><br>
         </div>
         <div>
-          <h2 class="ion-padding">Informacion sobre el concursante</h2>
           <ion-item>
             <ion-input
               [(ngModel)]="nombre"
@@ -43,7 +42,7 @@
           </ion-list>
           <ion-list>
             <ion-item>
-              <ion-input placeholder="Integrantes de la presentacion" [(ngModel)]="nombreParticipante" name="nombreParticipante"></ion-input>
+              <ion-input placeholder="Integrantes " [(ngModel)]="nombreParticipante" name="nombreParticipante"></ion-input>
               <ion-button slot="end" (click)="agregarParticipante() " (click)="addConcursante()">
                 <ion-icon name="add-circle-outline"></ion-icon>
               </ion-button>

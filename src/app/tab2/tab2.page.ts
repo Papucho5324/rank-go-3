@@ -26,12 +26,57 @@ export class Tab2Page implements OnInit, OnDestroy {
   nombreUsuario: string = '';
 
   doRefresh(event: CustomEvent) {
-    setTimeout(() => {
+    // Clear previous data
+    this.concursantes = [];
 
-      this.ngOnInit();
+    // Unsubscribe from current auth observer if it exists
+    if (this.unsubscribeAuthObserver) {
+      this.unsubscribeAuthObserver();
+    }
+    // Re-initialize the auth observer and data fetching logic
+  this.unsubscribeAuthObserver = onAuthStateChanged(this.auth, async (user) => {
+    if (!user) {
+      console.warn("⚠️ No hay usuario autenticado.");
       (event.target as HTMLIonRefresherElement).complete();
-    }, 2000);
-  }
+      return;
+    }
+
+    const juezId = user.uid;
+
+    try {
+      // 📌 Obtiene concursantes una sola vez
+      this.concursantesService.obtenerConcursantes().pipe(take(1)).subscribe(async (data) => {
+        const evaluacionesPromises = data.map(async (concursante) => {
+          return await firstValueFrom(this.concursantesService.obtenerEvaluaciones(concursante.id));
+        });
+
+        const evaluacionesResultados = await Promise.all(evaluacionesPromises);
+
+        this.concursantes = data.filter((concursante, index) => {
+          const evaluaciones = evaluacionesResultados[index] || [];
+          const yaEvaluado = evaluaciones.some((evalData: any) => evalData.id === juezId);
+          return !yaEvaluado;
+        });
+
+        this.cdr.detectChanges();
+
+        // Complete the refresh
+        (event.target as HTMLIonRefresherElement).complete();
+
+        // 📌 Obtiene el nombre del usuario
+        this.authService.obtenerDatosUsuario().subscribe(data => {
+          if (data) {
+            this.nombreUsuario = data.nombre;
+            this.cdr.detectChanges();
+          }
+        });
+      });
+    } catch (error) {
+      console.error("❌ Error al obtener los concursantes:", error);
+      (event.target as HTMLIonRefresherElement).complete();
+    }
+  });
+}
 
 
 
