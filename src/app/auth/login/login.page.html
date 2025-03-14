@@ -1,68 +1,60 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content #content [fullscreen]="true" class="content-background">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Login</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-
-  <div class="header">
-    <h1 class="title">Bienvenidos</h1>
-    <p class="ion-padding">Ingresa para empezar a evaluar</p>
+  <!-- Contenedor del carrusel -->
+  <div class="carousel-container">
+    <div class="carousel-slide active" style="background-image: url('assets/image1.jpg');"></div>
+    <div class="carousel-slide" style="background-image: url('assets/image2.jpg');"></div>
+    <div class="carousel-slide" style="background-image: url('assets/image3.jpg');"></div>
+    <div class="carousel-slide" style="background-image: url('assets/image4.jpg');"></div>
   </div>
 
-  <form >
+  <!-- Contenedor del login -->
+  <div class="login-container">
     <div class="form-container">
-      <div class="ion-padding">
+      <div class="google-icon">
+        <img src="assets/logo.png" alt="logo">
+      </div>
 
+      <h1 class="title ion-padding">Bienvenidos</h1>
+
+      <form>
         <ion-item>
           <ion-input
-          [(ngModel)]="email"
-          name="email"
-          type="email"
-          class="input"
-          placeholder="Ingrese su correo"
-          >
+            [(ngModel)]="email"
+            labelPlacement="stacked"
+            [clearInput]="true"
+            name="email"
+            type="email"
+            class="input"
+            placeholder="juez@toros.com"
+            label="Correo"
+            required="true"
+            aria-hidden="true">
+            <ion-icon slot="start" name="mail" aria-hidden="true"></ion-icon>
           </ion-input>
-          <ion-icon name="person-outline"></ion-icon>
         </ion-item>
 
         <ion-item>
           <ion-input
-          [(ngModel)]="password"
-          name="password"
-          type="password"
-          class="input"
-          placeholder="Ingresa tu contraseña"
-          >
+            [(ngModel)]="password"
+            name="password"
+            type="password"
+            [clearInput]="true"
+            labelPlacement="stacked"
+            class="input"
+            placeholder="Contraseña"
+            label="Contraseña"
+            required="true">
+            <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
+            <ion-input-password-toggle slot="end"></ion-input-password-toggle>
           </ion-input>
-          <ion-icon name="lock-closed" ></ion-icon>
         </ion-item>
 
         <div class="button-wrapper">
-          <ion-button (click)="login()"  class="btn">Iniciar Sesión</ion-button>
+          <ion-button expand="full" (click)="login()" class="btn">Iniciar Sesión</ion-button>
         </div>
-        <div class="register">
-          <p>
-            Nuevo Juez?
-            <a [routerLink]="['/signup']">Registrar</a>
-          </p>
-        </div>
-
-      </div>
+      </form>
     </div>
-  </form>
-  <ion-toast
-    [isOpen]="showToast"
-    message="{{ errorMessage }}"
-    duration="3000"
-    color="danger"
-    (didDismiss)="showToast = false">
-  </ion-toast>
+  </div>
+
 </ion-content>

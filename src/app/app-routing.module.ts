@@ -6,7 +6,7 @@ export const routes: Routes = [
   // Página inicial: Landing
   {
     path: '',
-    loadChildren: () => import('./auth/landing/landing.module').then(m => m.LandingPageModule)
+    loadChildren: () => import('./auth/login/login.module').then(m => m.LoginPageModule)
   },
   // Autenticación: Login y Signup
   {

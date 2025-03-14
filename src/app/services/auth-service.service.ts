@@ -1,6 +1,7 @@
 import { inject, Injectable, NgZone } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, UserCredential, onAuthStateChanged } from '@angular/fire/auth';
-import { setDoc, doc, Firestore } from '@angular/fire/firestore';
+import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, UserCredential, onAuthStateChanged, user } from '@angular/fire/auth';
+import { setDoc, doc, Firestore, docData } from '@angular/fire/firestore';
+import { Observable, of, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,16 @@ export class AuthService {
         }
       });
     });
+  }
+
+  obtenerDatosUsuario(): Observable<any> {
+    return user(this.auth).pipe(
+      switchMap(usuario => {
+        if (!usuario) return of(null); // Si no hay usuario autenticado, retorna null
+        const userRef = doc(this.firestore, `usuarios/${usuario.uid}`);
+        return docData(userRef);
+      })
+    );
   }
 
   async login(email: string, password: string): Promise<UserCredential> {

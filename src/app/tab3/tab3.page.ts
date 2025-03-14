@@ -13,7 +13,20 @@ export class Tab3Page implements OnInit {
   categorias: string[] = [];
   concursantes: any[] = [];
   categoriaSeleccionada: string = '';
-  ordenSeleccionado: string = 'default'; // 🔹 Nuevo: opción de ordenamiento
+  ordenSeleccionado: string = 'mayor'; // 🔹 Cambiado a 'mayor' por defecto
+
+  expandedConcursanteId: string | null = null;
+
+  // Paginación
+  currentPage: number = 1;
+  itemsPerPage: number = 7;
+
+  doRefresh(event: CustomEvent) {
+    setTimeout(() => {
+      this.ngOnInit();
+      (event.target as HTMLIonRefresherElement).complete();
+    }, 2000);
+  }
 
   constructor(
     private resultadosService: ResultadosService,
@@ -41,6 +54,41 @@ export class Tab3Page implements OnInit {
     });
   }
 
+   // Método para alternar la expansión de un concursante
+   toggleConcursanteExpanded(concursanteId: string) {
+    if (this.expandedConcursanteId === concursanteId) {
+      // Si ya está expandido, lo cerramos
+      this.expandedConcursanteId = null;
+    } else {
+      // Si no está expandido, lo expandimos y cargamos la información adicional
+      this.expandedConcursanteId = concursanteId;
+      this.cargarInformacionAdicional(concursanteId);
+    }
+  }
+
+    // Método para cargar la información adicional del concursante
+    cargarInformacionAdicional(concursanteId: string) {
+      // Verificamos si ya tenemos la información cargada
+      const concursante = this.concursantes.find(c => c.id === concursanteId);
+
+      // Si no tenemos los datos de integrantes o turno, los cargamos
+      if (concursante && (!concursante.participantes
+        || !concursante.turno)) {
+        this.concursantesService.obtenerDetallesConcursante(concursanteId).subscribe(detalles => {
+          // Actualizamos el concursante con la información adicional
+          const index = this.concursantes.findIndex(c => c.id === concursanteId);
+          if (index !== -1) {
+            this.concursantes[index] = {
+              ...this.concursantes[index],
+              participantes: detalles.participantes,
+              turno: detalles.turno
+              // Añade aquí más campos si lo necesitas
+            };
+          }
+        });
+      }
+    }
+
   /** 🔹 Filtrar y ordenar concursantes según la selección del usuario */
   getConcursantesFiltrados() {
     let concursantesFiltrados = this.categoriaSeleccionada
@@ -62,5 +110,22 @@ export class Tab3Page implements OnInit {
           ? `${concursante.nombre} (${concursante.categoria})`
           : concursante.nombre
     }));
+  }
+
+  /** 🔹 Obtener concursantes para la página actual */
+  getConcursantesPaginados() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.getConcursantesFiltrados().slice(startIndex, endIndex);
+  }
+
+  /** 🔹 Cambiar de página */
+  changePage(page: number) {
+    this.currentPage = page;
+  }
+
+  /** 🔹 Obtener el número total de páginas */
+  getTotalPages() {
+    return Math.ceil(this.getConcursantesFiltrados().length / this.itemsPerPage);
   }
 }
