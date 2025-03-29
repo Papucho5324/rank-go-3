@@ -6,7 +6,7 @@
     <div class="title-card ion-padding ">
       <h2 class="title ion-padding ">Concursantes Evaluados</h2><br>
     </div>
-    <ion-item>
+    <ion-item class="filtro">
       <ion-label>Categoría</ion-label>
       <ion-select [(ngModel)]="categoriaSeleccionada" class="ion-padding">
         <ion-select-option value="">Todas</ion-select-option>
@@ -21,7 +21,7 @@
     </ion-item>
     <br>
 
-    <ion-grid *ngIf="getConcursantesFiltrados().length > 0; else noResults">
+    <ion-grid *ngIf="getConcursantesFiltrados().length > 0; else noResults" class="resultados">
       <ion-row>
         <ion-col><strong>Concursante</strong></ion-col>
         <ion-col><strong>Puntuación Final</strong></ion-col>
