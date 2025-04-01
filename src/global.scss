@@ -36,18 +36,32 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
 
-
+/* Forzar modo oscuro */
 :root {
-  --ion-safe-area-top: env(safe-area-inset-top);
-  --ion-safe-area-bottom: env(safe-area-inset-bottom);
-  --ion-safe-area-left: env(safe-area-inset-left);
-  --ion-safe-area-right: env(safe-area-inset-right);
+  --ion-color-primary: #121212;
+  --ion-background-color: #000;
+  --ion-text-color: #fff;
+  margin-top: env(safe-area-inset-top);
+  margin-bottom: env(safe-area-inset-bottom);
+  --padding-bottom: env(safe-area-inset-bottom);
 }
 
-ion-header {
-  padding-top: var(--ion-safe-area-top);
+/* Asegurar que toda la app use el modo oscuro */
+body {
+  --ion-background-color: #000;
+  --ion-text-color: #fff;
+  background: var(--ion-background-color);
+  color: var(--ion-text-color);
+}
+
+.dark-theme {
+  --ion-background-color: #000;
+  --ion-text-color: #fff;
+  --ion-item-background: #222;
+  --ion-toolbar-background: #121212;
 }
 
 ion-content {
-  padding-bottom: var(--ion-safe-area-bottom);
+  --padding-bottom: env(safe-area-inset-bottom);
 }
+

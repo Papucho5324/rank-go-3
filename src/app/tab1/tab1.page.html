@@ -1,76 +1,67 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Concursantes
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="tab1" scrollY="true">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Concursantes</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="container">
+    <ion-infinite-scroll-content>
 
-  <div class="container" >
-    <h2 class="title" style="text-align: center;">Agregar Concursante</h2><br>
-    <form >
-      <div>
-        <ion-item>
-          <ion-input
-           [(ngModel)]="nombre"
-           name="nombre"
-            placeholder="Nombre de la presentacion"
-            type="name"
-            class="input"
-            required>
-          </ion-input>
-
-        </ion-item><br>
-
-        <ion-label class="ion-padding">Seleccione la categoria</ion-label>
-        <br>
-        <br>
-        <ion-list class="ion-padding">
-          <ion-radio-group [(ngModel)]="categoria" name="categoria">
-            <ion-item (click)="categoria = 'Talento Escenico'">
-              <ion-label>Talento Escénico</ion-label>
-              <ion-radio slot="end" value="Talento Escenico"></ion-radio>
-            </ion-item>
-            <ion-item (click)="categoria = 'Talento Creativo'">
-              <ion-label>Talento Creativo</ion-label>
-              <ion-radio slot="end" value="Talento Creativo"></ion-radio>
-            </ion-item>
-            <ion-item (click)="categoria = 'Otros Talentos'">
-              <ion-label>Otros Talentos</ion-label>
-              <ion-radio slot="end" value="Otros Talentos"></ion-radio>
-            </ion-item>
-            <ion-item (click)="categoria = 'Oficios'">
-              <ion-label>Oficios</ion-label>
-              <ion-radio slot="end" value="Oficios"></ion-radio>
-            </ion-item>
-            <ion-item (click)="categoria = 'Canto'">
-              <ion-label>Canto</ion-label>
-              <ion-radio slot="end" value="Canto"></ion-radio>
-            </ion-item>
-            <ion-item (click)="categoria = 'Coreografia'">
-              <ion-label>Coreografía</ion-label>
-              <ion-radio slot="end" value="Coreografia"></ion-radio>
-            </ion-item>
-            <ion-item (click)="categoria = 'Musico'">
-              <ion-label>Músico</ion-label>
-              <ion-radio slot="end" value="Musico"></ion-radio>
-            </ion-item>
-          </ion-radio-group>
-
-
-        </ion-list>
-        <div class="agregar">
-          <ion-button type="submit" expand="full" class="btn" (click)="agregarConcursante()">Agregar</ion-button>
+      <form>
+        <div class="title-card">
+          <h2 class="title">Agregar Concursante</h2><br>
         </div>
-      </div>
-    </form>
+        <div>
+          <ion-item>
+            <ion-input
+              [(ngModel)]="nombre"
+              name="nombre"
+              placeholder="Nombre de la presentacion"
+              type="text"
+              class="input"
+              required>
+            </ion-input>
+          </ion-item>
+
+          <ion-list class="ion-padding">
+            <ion-item>
+              <ion-select label="Categoría a participar" label-placement="floating" [(ngModel)]="categoria" name="categoria">
+                <ion-select-option value="Talento Escenico">Talento Escénico</ion-select-option>
+                <ion-select-option value="Talento Creativo">Talento Creativo</ion-select-option>
+                <ion-select-option value="Otros Talentos">Otros Talentos</ion-select-option>
+                <ion-select-option value="Oficios">Oficios</ion-select-option>
+                <ion-select-option value="Canto">Canto</ion-select-option>
+                <ion-select-option value="Coreografia">Coreografía</ion-select-option>
+                <ion-select-option value="Musico">Músico</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+          <ion-list class="ion-padding">
+            <ion-item>
+              <ion-select label="Turno" label-placement="floating" [(ngModel)]="turno" name="turno">
+                <ion-select-option value="Matutino">Matutino</ion-select-option>
+                <ion-select-option value="Vespertino">Vespertino</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+          <ion-list>
+            <ion-item>
+              <ion-input placeholder="Integrantes " [(ngModel)]="nombreParticipante" name="nombreParticipante"></ion-input>
+              <ion-button slot="end" (click)="agregarParticipante() " (click)="addConcursante()">
+                <ion-icon name="add-circle-outline"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-list>
+
+          <ion-list>
+            <ion-item *ngFor="let participante of participantes; let i = index">
+              <ion-label>{{ participante }}</ion-label>
+              <ion-button color="danger" (click)="participantes.splice(i,1)">Eliminar</ion-button>
+            </ion-item>
+          </ion-list>
+
+          <div class="agregar">
+            <ion-button type="button" expand="full" class="btn" (click)="agregarConcursante()">Agregar</ion-button>
+          </div>
+        </div>
+      </form>
+    </ion-infinite-scroll-content>
   </div>
 
 </ion-content>

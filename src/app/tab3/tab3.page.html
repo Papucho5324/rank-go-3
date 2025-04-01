@@ -1,54 +1,91 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Resultados</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true" class="ion-padding">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Resultados</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
+<ion-content class="tab3">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div class="container">
-    <ion-item>
+    <div class="title-card ion-padding ">
+      <h2 class="title ion-padding ">Concursantes Evaluados</h2><br>
+    </div>
+    <ion-item class="filtro">
       <ion-label>Categoría</ion-label>
-      <ion-select [(ngModel)]="categoriaSeleccionada">
+      <ion-select [(ngModel)]="categoriaSeleccionada" class="ion-padding">
         <ion-select-option value="">Todas</ion-select-option>
         <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</ion-select-option>
       </ion-select>
-      <ion-label></ion-label>
+
       <ion-label>Ordenar por</ion-label>
-      <ion-select [(ngModel)]="ordenSeleccionado">
-        <ion-select-option value="default">Por defecto</ion-select-option>
-        <ion-select-option value="mayor">Mayor puntuación</ion-select-option>
-        <ion-select-option value="menor">Menor puntuación</ion-select-option>
+      <ion-select [(ngModel)]="ordenSeleccionado" class="ion-padding">
+        <ion-select-option value="mayor">Mayor</ion-select-option>
+        <ion-select-option value="menor">Menor</ion-select-option>
       </ion-select>
     </ion-item>
-<br>
-    <!-- <ion-item>
-      <ion-label>Ordenar por</ion-label>
-      <ion-select [(ngModel)]="ordenSeleccionado">
-        <ion-select-option value="default">Por defecto</ion-select-option>
-        <ion-select-option value="mayor">Mayor puntuación</ion-select-option>
-        <ion-select-option value="menor">Menor puntuación</ion-select-option>
-      </ion-select>
-    </ion-item> -->
+    <br>
 
-    <ion-grid *ngIf="getConcursantesFiltrados().length > 0; else noResults">
+    <ion-grid *ngIf="getConcursantesFiltrados().length > 0; else noResults" class="resultados">
       <ion-row>
         <ion-col><strong>Concursante</strong></ion-col>
         <ion-col><strong>Puntuación Final</strong></ion-col>
       </ion-row>
-      <ion-row *ngFor="let concursante of getConcursantesFiltrados()">
-        <ion-col>{{ concursante.nombre }}</ion-col>
-        <ion-col>{{ concursante.totalPuntos }}</ion-col>
-      </ion-row>
+
+      <!-- Por cada concursante, crea una sección expandible -->
+      <ng-container *ngFor="let concursante of getConcursantesPaginados()">
+        <ion-row class="concursante-row" (click)="toggleConcursanteExpanded(concursante.id)">
+          <ion-col>{{ concursante.nombre }}</ion-col>
+          <ion-col>
+            {{ concursante.totalPuntos }}
+            <ion-icon [name]="expandedConcursanteId === concursante.id ? 'chevron-up' : 'chevron-down'"
+                      slot="end"></ion-icon>
+          </ion-col>
+        </ion-row>
+
+        <!-- Información adicional que se muestra cuando está expandido -->
+        <ion-row *ngIf="expandedConcursanteId === concursante.id" class="expanded-info">
+          <ion-col size="12">
+            <ion-card>
+              <ion-card-content>
+                <ion-item>
+                  <ion-label>
+                    <h3>Integrantes:</h3>
+                    <p>{{ concursante.participantes || 'No hay información de integrantes' }}</p>
+                  </ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>
+                    <h3>Turno:</h3>
+                    <p>{{ concursante.turno || 'No especificado' }}</p>
+                  </ion-label>
+                </ion-item>
+                <!-- Puedes añadir más información aquí según necesites -->
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ng-container>
     </ion-grid>
 
     <ng-template #noResults>
       <p>No hay concursantes evaluados aún.</p>
     </ng-template>
+
   </div>
+  <!-- Paginación -->
+  <ion-footer *ngIf="getTotalPages() > 1" class="footer">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+          Anterior
+        </ion-button>
+      </ion-buttons>
+
+      <ion-title class="ion-text-center">
+        Página {{ currentPage }} de {{ getTotalPages() }}
+      </ion-title>
+
+      <ion-buttons slot="end">
+        <ion-button [disabled]="currentPage === getTotalPages()" (click)="changePage(currentPage + 1)">
+          Siguiente
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
 </ion-content>

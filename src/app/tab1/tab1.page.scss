@@ -1,0 +1,163 @@
+:host {
+  --primary-color: #4CAF50;
+  --secondary-color: #f5eaea;
+  --text-color: #fff;
+  --background-color: #121212;
+  --table-bg: rgba(255, 255, 255, 0.1);
+  --table-header-bg: rgba(255, 255, 255, 0.2);
+  --hover-bg: rgba(255, 255, 255, 0.15);
+  font-family: 'Poppins', sans-serif;
+}
+
+ion-content {
+  --background: var(--background-color);
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Contenedor principal */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+
+  height: 100%;
+
+
+}
+
+/* Título más grande y con mejor contraste */
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: auto;
+  color: var(--secondary-color);
+  // margin-top: 150px;
+  margin-bottom: 20px;
+}
+
+.title-card{
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
+  margin: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+}
+
+form {
+  width: 700px;
+
+  background: var(--background-item);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  padding: 15px;
+
+
+}
+
+
+
+/* Estilos de los ion-item para inputs */
+ion-item {
+  --background: var(--background-item);
+  --color: var(--text-color);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  padding: 10px;
+  --inner-padding-end: 10px;
+  box-shadow: 0 2px 5px var(--shadow-color);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+
+ion-input{
+    text-align: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    margin: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+
+
+}
+ion-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+
+ion-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+/* Estilo del texto dentro de los labels */
+ion-label {
+  font-size: 1rem;
+  color: var(--secondary-color);
+}
+
+
+
+
+
+/* Sección del botón de Agregar */
+.agregar {
+  margin-top: 20px;
+}
+
+/* Botón de agregar con mejor tamaño y efecto hover */
+.btn {
+  --background: var(--primary-color);
+  --color: var(--background-item);
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 15px;
+  font-size: 1.2rem;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.5);
+}
+
+/* Diseño Responsivo */
+@media (max-width: 768px) {
+  .tab1 {
+    justify-content: flex-start;
+    margin-top: env(safe-area-inset-top);
+    --padding-bottom: env(safe-area-inset-bottom);
+  }
+  .title {
+    font-size: 1.5rem;
+  }
+
+  form {
+    padding: 15px;
+    width: 100%;
+  }
+
+  ion-item {
+    margin-bottom: 12px;
+  }
+
+  ion-input{
+    padding: 15px;
+    font-size: 1rem;
+  }
+
+  .btn {
+    padding: 12px;
+    font-size: 1rem;
+  }
+}

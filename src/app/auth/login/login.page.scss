@@ -1,78 +1,110 @@
-.input{
-  font-size: 16px;
-  color: black;
+:host {
+  --primary-color: #4285F4;
+  --secondary-color: #000;
+  --text-color: #fff;
+  --white: #fff;
+  font-family: 'Poppins', sans-serif;
+  --keyboard-offset: 20px;
 }
 
-
-ion-item{
-  --background:#f1f1f1;
-  border-radius: 10px;
-  margin-bottom: 16px;
-
-}
-ion-icon{
-  color: black;
+.keyboard-open {
+  padding-bottom: 300px;
 }
 
-.header{
-  margin-top: 100px;
-  margin-bottom: 80px;
-  text-align: center;
-  .subTitle{
-    color: gray;
-    font-size: 0.9rem;
-  }
-  .title{
-    font-size: 2rem;
-  }
-}
-
-.error-text {
-  color: red;
-  text-align: center;
-  font-size: 14px;
-  margin-top: 10px;
-}
-
-.btn{
-  display: flex;
-  margin: auto;
-  flex-direction: row;
-  align-content: center;
-  justify-content: center;
-  margin-top: 30px;
-  width: 25%;
-}
-.form-container {
-  position: relative;
-  padding-bottom: 60px; // espacio para la sección register
-}
-
-.register{
+/* Contenedor del carrusel de fondo */
+.carousel-container {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 20px;  // ajuste la distancia desde abajo
-  width: auto;
-  text-align: center;
-
-  p{
-    font-size: 0.9rem;
-  }
-  a{
-    text-decoration: none;
-  }
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1;
 }
 
+/* Cada slide de imagen */
+.carousel-slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
 
-.forgotpassword{
+/* Activa el slide actual */
+.carousel-slide.active {
+  opacity: 1;
+}
+
+/* Contenedor principal del login */
+.login-container {
   display: flex;
-  justify-content: flex-end;
-  a{
-    font-weight: 400;
-    font-size: 0.8rem;
-    text-decoration: none;
-  }
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-top: 20px; /* Ajusta este valor según sea necesario */
 }
 
+/* Tarjeta flotante */
+.form-container {
+  background: rgba(0, 0, 0, 0.9);
+  width: 90%;
+  max-width: 400px;
+  padding: 30px;
+  border-radius: 30px;
+  text-align: center;
+  box-shadow: 0px -5px 15px rgba(0, 0, 0, 0.2);
+}
 
+.google-icon img {
+  width: 100px;
+  margin-bottom: 10px;
+}
+
+/* Título */
+.title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--text-color);
+  margin-bottom: 5px;
+}
+
+/* Botón */
+.btn {
+  --background: var(--primary-color);
+  --color: var(--white);
+  font-weight: bold;
+  width: 100%;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+ion-content {
+  scroll-padding-bottom: 100px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .login-container {
+    justify-content: flex-start;
+    margin-top: env(safe-area-inset-top);
+    margin-top: 100px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .form-container {
+    padding: 20px;
+  }
+
+  .btn {
+    padding: 10px;
+  }
+}

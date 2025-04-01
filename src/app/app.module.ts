@@ -17,9 +17,9 @@ import { environment } from '../environments/environment';
     AppRoutingModule,
   ],
   providers: [
-    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)), // ✅ Mover a providers
-    provideFirestore(() => getFirestore()), // ✅ Mover a providers
-    provideAuth(() => getAuth()), 
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth()),
   ],
   bootstrap: [AppComponent]
 })
