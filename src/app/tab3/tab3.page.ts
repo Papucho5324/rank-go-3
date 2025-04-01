@@ -13,13 +13,13 @@ export class Tab3Page implements OnInit {
   categorias: string[] = [];
   concursantes: any[] = [];
   categoriaSeleccionada: string = '';
-  ordenSeleccionado: string = 'mayor'; // 🔹 Cambiado a 'mayor' por defecto
+  ordenSeleccionado: string = 'mayor';
 
   expandedConcursanteId: string | null = null;
 
   // Paginación
   currentPage: number = 1;
-  itemsPerPage: number = 7;
+  itemsPerPage: number = 5;
 
   doRefresh(event: CustomEvent) {
     setTimeout(() => {
