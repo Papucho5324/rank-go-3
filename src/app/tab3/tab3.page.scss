@@ -156,6 +156,13 @@ ion-col {
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
+.footer{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
