@@ -25,6 +25,7 @@ export class Tab1Page {
   agregarParticipante(){
     if(this.nombreParticipante.trim()){
       this.participantes.push(this.nombreParticipante.trim());
+      this.nombreParticipante = ''; // Restablecer
     }
   }
 
@@ -45,11 +46,6 @@ export class Tab1Page {
     } catch (error) {
       console.error("❌ Error al agregar concursante:", error);
     }
-  }
-
-  addConcursante(){
-    this.nombreParticipante = ''; // Restablecer
-
   }
 
 }
