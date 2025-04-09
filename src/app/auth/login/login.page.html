@@ -44,7 +44,8 @@
             class="input"
             placeholder="Contraseña"
             label="Contraseña"
-            required="true">
+            required="true"
+            (keyup.enter)="login()">
             <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
             <ion-input-password-toggle slot="end"></ion-input-password-toggle>
           </ion-input>
@@ -52,6 +53,7 @@
 
         <div class="button-wrapper">
           <ion-button expand="full" (click)="login()" class="btn">Iniciar Sesión</ion-button>
+          <ion-button fill="clear" routerLink="/privacy">Aviso de privacidad</ion-button>
         </div>
       </form>
     </div>

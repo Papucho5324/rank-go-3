@@ -14,8 +14,8 @@ export const routes: Routes = [
     loadChildren: () => import('./auth/login/login.module').then(m => m.LoginPageModule)
   },
   {
-    path: 'signup',
-    loadChildren: () => import('./auth/signup/signup.module').then(m => m.SignupPageModule)
+    path: 'privacy',
+    loadChildren: () => import('./auth/privacy/privacy.module').then( m => m.PrivacyPageModule)
   },
   // Sección autenticada: Tabs
   {
@@ -28,6 +28,8 @@ export const routes: Routes = [
     redirectTo: '',
     pathMatch: 'full'
   },
+
+
 
 
 ];

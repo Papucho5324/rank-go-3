@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth-service.service';
 import { Router } from '@angular/router';
 import { Keyboard } from '@capacitor/keyboard';
-import { IonContent } from '@ionic/angular';
+import { IonContent, LoadingController } from '@ionic/angular';
 import { Capacitor } from '@capacitor/core';
 
 
@@ -24,7 +24,8 @@ export class LoginPage implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private loadingCtrl: LoadingController
   ) {}
 
   ngOnInit() {
@@ -84,8 +85,18 @@ export class LoginPage implements OnInit {
 
     this.errorMessage = '';
 
+    // 👉 Muestra el spinner de carga
+    const loading = await this.loadingCtrl.create({
+      message: 'Iniciando sesión...',
+      spinner: 'crescent',
+    });
+
+    await loading.present();
+
     try {
       const userCredential = await this.authService.login(this.email, this.password);
+
+      await loading.dismiss(); // 👈 Cierra el spinner si fue exitoso
 
       if (userCredential?.user) {
         console.log('Login exitoso: ', userCredential.user);
@@ -97,6 +108,8 @@ export class LoginPage implements OnInit {
         console.warn('Login no exitoso');
       }
     } catch (error: unknown) {
+      await loading.dismiss(); // 👈 Cierra el spinner también en error
+
       console.error('Error en el login:', error);
 
       if (typeof error === 'object' && error !== null && 'code' in error) {
@@ -108,6 +121,7 @@ export class LoginPage implements OnInit {
       this.showToast = true;
     }
   }
+
 
   /**
    * Traduce los códigos de error de Firebase a mensajes amigables para el usuario.
