@@ -2,8 +2,8 @@ import type { CapacitorConfig } from '@capacitor/cli';
 import { KeyboardResize, KeyboardStyle } from '@capacitor/keyboard';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'ShowTalentos',
+  appId: 'io.ionic.talento270',
+  appName: 'Talento270',
   webDir: 'www',
   plugins: {
     SplashScreen: {
